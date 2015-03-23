@@ -20,3 +20,5 @@ alias gvim='gvim --remote-tab'
 alias peerflix='peerflix --vlc'
 alias checkupdates='sudo aptitude update && sudo aptitude upgrade'
 alias sapt='sudo aptitude'
+
+[[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
