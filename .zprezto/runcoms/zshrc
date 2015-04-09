@@ -22,10 +22,6 @@ alias peerflix='peerflix --vlc'
 alias checkupdates='sudo aptitude update && sudo aptitude upgrade'
 alias sapt='sudo aptitude'
 
-# fixes strange cursor position / formating bug
-export LC_ALL=en_US.UTF-8  
-export LANG=en_US.UTF-8
-
 # vcsh commit and push
 vcsh_cp() {
    [[ $1 == "-h" ]] && echo "vcsh_cp <repo> <commit text>"
