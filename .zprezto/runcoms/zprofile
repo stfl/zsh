@@ -19,7 +19,8 @@ fi
 
 export EDITOR='vim'
 export VISUAL='vim'
-export PAGER='vimpager'
+export PAGER='less'
+#export PAGER='vimpager'
 alias less=$PAGER
 alias zless=$PAGER
 
@@ -28,9 +29,9 @@ alias zless=$PAGER
 # Language
 #
 
-if [[ -z "$LANG" ]]; then
-  export LANG='en_US.UTF-8'
-fi
+# fixes strange cursor position / formating bug
+export LC_ALL=en_US.UTF-8  
+export LANG=en_US.UTF-8
 
 #
 # Paths
@@ -47,6 +48,7 @@ typeset -gU cdpath fpath mailpath path
 # Set the list of directories that Zsh searches for programs.
 path=(
   /usr/local/{bin,sbin}
+  $USER/bin
   $path
 )
 
