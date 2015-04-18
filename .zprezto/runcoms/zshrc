@@ -22,15 +22,23 @@ alias peerflix='peerflix --vlc'
 alias checkupdates='sudo aptitude update && sudo aptitude upgrade'
 alias sapt='sudo aptitude'
 
-# fixes strange cursor position / formating bug
-export LC_ALL=en_US.UTF-8  
-export LANG=en_US.UTF-8
-
 # vcsh commit and push
 vcsh_cp() {
    [[ $1 == "-h" ]] && echo "vcsh_cp <repo> <commit text>"
    vcsh $1 commit -am $2
    vcsh $1 push
+}
+
+# Disable globbing on the remote path.
+alias scp='noglob scp_wrap'
+function scp_wrap {
+  local -a args
+  local i
+  for i in "$@"; do case $i in
+    (*:*) args+=($i) ;;
+    (*) args+=(${~i}) ;;
+  esac; done
+  command scp "${(@)args}"
 }
 
 [[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq

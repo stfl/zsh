@@ -28,9 +28,9 @@ alias zless=$PAGER
 # Language
 #
 
-if [[ -z "$LANG" ]]; then
-  export LANG='en_US.UTF-8'
-fi
+# fixes strange cursor position / formating bug
+export LC_ALL=en_US.UTF-8  
+export LANG=en_US.UTF-8
 
 #
 # Paths
@@ -47,7 +47,11 @@ typeset -gU cdpath fpath mailpath path
 # Set the list of directories that Zsh searches for programs.
 path=(
   /usr/local/{bin,sbin}
+<<<<<<< HEAD
   ~/bin
+=======
+  $USER/bin
+>>>>>>> ec197063ceecb6fe982debb3933e1e7e38b81a0f
   $path
 )
 
