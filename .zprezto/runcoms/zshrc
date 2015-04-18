@@ -22,6 +22,8 @@ alias peerflix='peerflix --vlc'
 alias checkupdates='sudo aptitude update && sudo aptitude upgrade'
 alias sapt='sudo aptitude'
 
+emulate bash -c 'runise(){ source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; }'
+
 # vcsh commit and push
 vcsh_cp() {
    [[ $1 == "-h" ]] && echo "vcsh_cp <repo> <commit text>"
