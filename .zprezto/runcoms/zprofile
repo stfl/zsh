@@ -19,8 +19,7 @@ fi
 
 export EDITOR='vim'
 export VISUAL='vim'
-export PAGER='less'
-#export PAGER='vimpager'
+export PAGER='less' # 'vimpager'
 alias less=$PAGER
 alias zless=$PAGER
 
@@ -49,6 +48,7 @@ typeset -gU cdpath fpath mailpath path
 path=(
   /usr/local/{bin,sbin}
   $USER/bin
+  $USER/mybin
   $path
 )
 
