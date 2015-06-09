@@ -21,11 +21,17 @@ alias zreload='source ~/.zshrc'
 alias peerflix='peerflix --vlc'
 alias checkupdates='sudo aptitude update && sudo aptitude upgrade'
 alias sapt='sudo aptitude'
+emulate bash -c 'runise() { source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; }'
 
-emulate bash -c 'runise(){ source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; }'
+############## keybinding
 
+bindkey -M emacs "^B" emacs-backward-word
+bindkey -M emacs "^W" emacs-forward-word
+
+
+############## Functions
 # vcsh commit and push
-vcsh_cp() {
+function vcsh_cp {
    [[ $1 == "-h" ]] && echo "vcsh_cp <repo> <commit text>"
    vcsh $1 commit -am $2
    vcsh $1 push
@@ -42,5 +48,29 @@ function scp_wrap {
   esac; done
   command scp "${(@)args}"
 }
+
+# automatically set title in screen and xterm - not working
+# function title {
+  # if [[ $TERM == "screen" ]]; then
+    # # Use these two for GNU Screen:
+    # print -nR $'\033k'$1$'\033'\\
+
+    # print -nR $'\033]0;'$2$'\a'
+  # elif [[ $TERM == "xterm" || $TERM == "rxvt" ]]; then
+    # # Use this one instead for XTerms:
+    # print -nR $'\033]0;'$*$'\a'
+  # fi
+# }
+
+# function precmd {
+  # title zsh "$PWD"
+# }
+
+# function preexec {
+  # # emulate -L zsh
+  # local -a cmd; cmd=(${(z)1})
+  # title $cmd[1]:t "$cmd[2,-1]"
+# }
+
 
 [[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
