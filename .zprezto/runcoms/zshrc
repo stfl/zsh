@@ -25,9 +25,10 @@ emulate bash -c 'runise() { source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; 
 
 ############## keybinding
 
-bindkey -M emacs "^B" emacs-backward-word
-bindkey -M emacs "^W" emacs-forward-word
-
+bindkey -M emacs "^H" emacs-backward-word
+bindkey -M emacs "^L" emacs-forward-word
+bindkey -M emacs "^K" history-substring-search-up
+bindkey -M emacs "^J" history-substring-search-down
 
 ############## Functions
 # vcsh commit and push
@@ -57,13 +58,7 @@ function scp_wrap {
 
     # print -nR $'\033]0;'$2$'\a'
   # elif [[ $TERM == "xterm" || $TERM == "rxvt" ]]; then
-    # # Use this one instead for XTerms:
-    # print -nR $'\033]0;'$*$'\a'
-  # fi
-# }
-
-# function precmd {
-  # title zsh "$PWD"
+    # # Use this one instead for XTerms: # print -nR $'\033]0;'$*$'\a' # fi # } # function precmd { # title zsh "$PWD"
 # }
 
 # function preexec {
