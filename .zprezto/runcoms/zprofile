@@ -49,7 +49,7 @@ path=(
   /usr/local/{bin,sbin}
   /usr/{bin,sbin}
   /{bin,sbin}
-  $USER/{bin,mybin}
+  /home/$USER/{bin,mybin}
   $path
 )
 
