@@ -1,0 +1,5 @@
+
+# shelltitle '> |$(pwd):'
+
+caption always "%3n %t%? (%u)%?%?: %h%?"
+
