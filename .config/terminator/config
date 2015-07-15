@@ -5,7 +5,6 @@
   cycle_prev = <Shift>Tab
   go_up = <Shift><Control>k
   next_tab = <Shift><Control>Tab
-  split_horiz = <Shift><Control>d
   go_down = <Shift><Control>j
   go_right = <Shift><Control>l
   go_left = <Shift><Control>h
