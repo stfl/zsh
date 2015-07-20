@@ -6,6 +6,7 @@
   go_up = <Shift><Control>k
   next_tab = <Shift><Control>Tab
   go_down = <Shift><Control>j
+  cycle_next = <Shift><Control>a
   go_right = <Shift><Control>l
   go_left = <Shift><Control>h
 [profiles]
