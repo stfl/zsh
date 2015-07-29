@@ -17,7 +17,7 @@ fi
 #alias snas='ssh nas sudo halt -p'
 #alias mountrpi="sshfs -o idmap=user -o port=2223 stefan@192.168.0.151:/ /media/rpi/"
 alias gvim='gvim --remote-tab'
-alias zreload='. ~/{.zshrc,.zprofile}'
+alias zreload='. ~/.zshrc && . ~/.zprofile'
 alias peerflix='peerflix --vlc'
 alias checkupdates='sudo aptitude update && sudo aptitude upgrade'
 alias sapt='sudo aptitude'
@@ -68,4 +68,4 @@ function scp_wrap {
 # }
 
 
-[[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
+source ~/.zprofile

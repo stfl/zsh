@@ -88,4 +88,5 @@ if [[ ! -d "$TMPPREFIX" ]]; then
   mkdir -p "$TMPPREFIX"
 fi
 
-
+# source frq specifics if present
+[[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
