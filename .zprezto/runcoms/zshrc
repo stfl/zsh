@@ -21,7 +21,7 @@ alias zreload='. ~/.zshrc && . ~/.zprofile'
 alias peerflix='peerflix --vlc'
 alias checkupdates='sudo aptitude update && sudo aptitude upgrade'
 alias sapt='sudo aptitude'
-alias find='noglob find -not -iwholename "*.svn"'
+alias find='noglob find -not -iwholename "*.svn" -path'
 emulate bash -c 'runise() { source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; }'
 
 ############## keybinding
