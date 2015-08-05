@@ -10,6 +10,8 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+
+
 # Customize to your needs...
 
 #alias tnas="nc -zv 192.168.0.150 2049"
@@ -68,5 +70,8 @@ function scp_wrap {
   # title $cmd[1]:t "$cmd[2,-1]"
 # }
 
+# enable quick dir and file navigation in shell
+eval "$(fasd --init auto)"
+alias v='f -e vim' # quick opening files with vim
 
 source ~/.zprofile
