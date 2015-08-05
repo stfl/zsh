@@ -71,7 +71,12 @@ function scp_wrap {
 # }
 
 # enable quick dir and file navigation in shell
-eval "$(fasd --init auto)"
-alias v='f -e vim' # quick opening files with vim
+# eval "$(fasd --init auto)"
+# alias j is set to quick cd in prezto
+alias v='fasd -f -e vim' # quick opening files with vim
+alias gv='fasd -f -e gvim' # quick opening files with vim
+alias jv='fasd -sif -e vim' # quick select for opening
+alias jgv='fasd -sif -e gvim' # quick select for opening
+alias jf='fasd -sif'     # interactive file selection
 
 source ~/.zprofile
