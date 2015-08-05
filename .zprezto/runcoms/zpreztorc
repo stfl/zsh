@@ -34,9 +34,11 @@ zstyle ':prezto:load' pmodule \
   'syntax-highlighting' \
   'rsync' \
   'git' \
+  'ssh' \
+  'fasd' \
+  'archive' \
   'wakeonlan' \
   'command-not-found' \
-  'gnu-utility' \
   'history-substring-search' \
   'utility' \
   'prompt' 
