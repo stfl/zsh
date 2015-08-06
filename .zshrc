@@ -10,8 +10,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-
-
 # Customize to your needs...
 
 #alias tnas="nc -zv 192.168.0.150 2049"
@@ -19,6 +17,7 @@ fi
 #alias snas='ssh nas sudo halt -p'
 #alias mountrpi="sshfs -o idmap=user -o port=2223 stefan@192.168.0.151:/ /media/rpi/"
 alias gvim='gvim --remote-tab'
+alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
 alias peerflix='peerflix --vlc'
 alias checkupdates='sudo aptitude update && sudo aptitude upgrade'
