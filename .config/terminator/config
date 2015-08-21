@@ -2,11 +2,10 @@
   title_transmit_bg_color = "#d30102"
   focus = system
 [keybindings]
-  cycle_prev = ""
+  cycle_prev = <Shift>Tab
   go_up = <Shift><Control>k
-  next_tab = <Control>Tab
+  next_tab = <Shift><Control>Tab
   go_down = <Shift><Control>j
-  cycle_next = <Shift><Control>a
   go_right = <Shift><Control>l
   go_left = <Shift><Control>h
 [profiles]
@@ -26,7 +25,6 @@
     background_image = None
     background_darkness = 0.91
     scrollback_lines = 5000
-    background_type = transparent
     use_system_font = False
     cursor_color = "#eee8d5"
     foreground_color = "#eee8d5"
@@ -37,7 +35,6 @@
     palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
     background_darkness = 0.91
     scrollback_lines = 5000
-    background_type = transparent
     background_image = None
     cursor_color = "#002b36"
     foreground_color = "#002b36"
