@@ -20,8 +20,15 @@ alias gvim='gvim --remote-tab'
 alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
 alias peerflix='peerflix --vlc'
-alias checkupdates='sudo aptitude update && sudo aptitude upgrade'
-alias sapt='sudo aptitude'
+
+# debian apt-get aliases
+alias sapt='sudo apt-get'
+alias aup='sudo apt-get update'
+alias {aupg,aug}='sudo apt-get upgrade' # multiple aliases -> IMPORTANT without space in {,}
+alias {adupg,adg}='sudo apt-get dist-upgrade'
+alias chup='sudo apt-get update && sudo apt-get upgrade'
+
+
 # alias find='noglob find -not -iwholename "*.svn" -path'
 emulate bash -c 'runise() { source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; }'
 
