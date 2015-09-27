@@ -27,7 +27,8 @@ alias aup='sudo apt-get update'
 alias {aupg,aug}='sudo apt-get upgrade' # multiple aliases -> IMPORTANT without space in {,}
 alias {adupg,adg}='sudo apt-get dist-upgrade'
 alias chup='sudo apt-get update && sudo apt-get upgrade'
-
+alias ai='sudo apt-get install'
+alias ac='apt-cache'
 
 # alias find='noglob find -not -iwholename "*.svn" -path'
 emulate bash -c 'runise() { source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; }'
