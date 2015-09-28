@@ -22,7 +22,8 @@ alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
 
 #files are .ssh/config and all in ~/.ssh/config.d
-alias ssh='ssh -F <(cat .ssh/config ~/.ssh/config.d/* 2> /dev/null)'
+alias ssh='ssh -F <(cat ~/.ssh/config ~/.ssh/config.d/* 2> /dev/null)'
+alias scp='noglob scp_wrap -F <(cat ~/.ssh/config ~/.ssh/config.d/* 2> /dev/null)'
 
 # debian apt-get aliases
 # {{{
@@ -69,7 +70,6 @@ function vcsh_cp
 }
 
 # Disable globbing on the remote path.
-alias scp='noglob scp_wrap'
 function scp_wrap {
   local -a args
   local i
