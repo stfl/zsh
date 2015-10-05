@@ -80,6 +80,10 @@ function scp_wrap {
   command scp "${(@)args}"
 }
 
+ssh-copy-id() {
+   ssh $1 'cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_*.pub
+}
+
 imv() {
   local src dst
   for src; do
