@@ -22,7 +22,8 @@ alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
 
 #files are .ssh/config and all in ~/.ssh/config.d
-alias ssh='ssh -F <(cat ~/.ssh/config ~/.ssh/config.d/* 2> /dev/null)'
+alias ssh='ssh -F <(setopt localoptions nonomatch nocshnullglob; \
+   cat ~/.ssh/config ~/.ssh/config.d/* 2> /dev/null)'
 alias scp='noglob scp_wrap -F <(cat ~/.ssh/config ~/.ssh/config.d/* 2> /dev/null)'
 
 # debian apt-get aliases
@@ -34,6 +35,7 @@ alias {adupg,adg}='sudo apt-get dist-upgrade'
 alias chup='sudo apt-get update && sudo apt-get upgrade'
 alias ai='sudo apt-get install'
 alias ac='apt-cache'
+alias vcsh_up='for repo in $(vcsh list); do; vcsh $repo pull; done'
 
 # alias find='noglob find -not -iwholename "*.svn" -path'
 emulate bash -c 'runise() { source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; }'
