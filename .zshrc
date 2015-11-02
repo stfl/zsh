@@ -35,7 +35,6 @@ alias {adupg,adg}='sudo apt-get dist-upgrade'
 alias chup='sudo apt-get update && sudo apt-get upgrade'
 alias ai='sudo apt-get install'
 alias ac='apt-cache'
-alias vcsh_up='for repo in $(vcsh list); do; vcsh $repo pull; done'
 
 # alias find='noglob find -not -iwholename "*.svn" -path'
 emulate bash -c 'runise() { source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; }'
@@ -70,6 +69,27 @@ function vcsh_cp
    vcsh $1 commit -am $2
    vcsh $1 push
 }
+
+# write auto-commit post-commit hook to vcsh repo
+vcsh_write_auto_commit() {
+   echo "#\!/bin/sh\necho "running post-commit hook"\ngit push origin master" \
+      >| ~/.config/vcsh/repo.d/$1.git/hooks/post-commit
+   chmod 700 ~/.config/vcsh/repo.d/$1.git/hooks/post-commit
+}
+
+# update all vcsh repos
+function vcsh_up {
+   for repo in $(vcsh list); do
+      # [[ -z $repo ]] && continue
+      echo "\nupdating vcsh repo: $repo"
+      vcsh $repo pull origin master
+      vcsh $repo config branch.master.remote origin
+      vcsh $repo config branch.master.merge refs/heads/master
+      vcsh write-gitignore $repo
+      vcsh_write_auto_commit $repo
+   done
+}
+
 
 # Disable globbing on the remote path.
 function scp_wrap {
