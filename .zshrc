@@ -81,7 +81,7 @@ vcsh_write_auto_commit() {
 function vcsh_up {
    for repo in $(vcsh list); do
       # [[ -z $repo ]] && continue
-      echo "\nupdating vcsh repo: $repo"
+      echo -e "\nupdating vcsh repo: $(color green)$repo$(color)"
       vcsh $repo pull origin master
       vcsh $repo config branch.master.remote origin
       vcsh $repo config branch.master.merge refs/heads/master
@@ -96,8 +96,8 @@ function scp_wrap {
   local -a args
   local i
   for i in "$@"; do case $i in
-    (*:*) args+=($i) ;;
-    (*) args+=(${~i}) ;;
+     (*:*) args+=($i) ;;
+     (*) args+=(${~i}) ;;
   esac; done
   command scp "${(@)args}"
 }
