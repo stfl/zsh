@@ -11,8 +11,11 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 # }}}
 
-# aliases
-# {{{
+############ vaiables {{{
+
+# }}}
+
+############ aliases {{{
 #alias tnas="nc -zv 192.168.0.150 2049"
 #alias mnas='wake nas; tnas; while [[ $? -ne 0 ]] { sleep 2; tnas }; sudo mount -a'
 #alias snas='ssh nas sudo halt -p'
@@ -52,16 +55,14 @@ alias jf='fasd -sif'     # interactive file selection
 
 # }}}
 
-############## keybinding
-# {{{
+############## keybinding {{{
 bindkey -M emacs "^H" emacs-backward-word
 bindkey -M emacs "^L" emacs-forward-word
 bindkey -M emacs "^K" history-substring-search-up
 bindkey -M emacs "^J" history-substring-search-down
 # }}}
 
-############## Functions
-# {{{
+############## Functions {{{
 # vcsh commit and push
 function vcsh_cp
 {
@@ -135,10 +136,12 @@ verlt() {
 
 # }}}
 
+############## completion {{{
 # add hosts completion for .ssh/config.d/ files
 zstyle -s ':completion:*:hosts' hosts _ssh_config
 [[ -d ~/.ssh/config.d ]] && _ssh_config+=($(cat ~/.ssh/config.d/* | sed -ne 's/Host[=\t ]//Ip'))
 zstyle ':completion:*:hosts' hosts $_ssh_config
 
+# }}}
 
 source ~/.zprofile
