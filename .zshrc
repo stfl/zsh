@@ -56,10 +56,17 @@ alias jf='fasd -sif'     # interactive file selection
 # }}}
 
 ############## keybinding {{{
-bindkey -M emacs "^H" emacs-backward-word
-bindkey -M emacs "^L" emacs-forward-word
-bindkey -M emacs "^K" history-substring-search-up
-bindkey -M emacs "^J" history-substring-search-down
+# bindkey -M emacs "^H" emacs-backward-word
+# bindkey -M emacs "^L" emacs-forward-word
+# bindkey -M emacs "^K" history-substring-search-up
+# bindkey -M emacs "^J" history-substring-search-down
+# bindkey -M emacs 'jk' vi-cmd-mode
+
+bindkey -M viins 'jk' vi-cmd-mode
+# bindkey -M viins "^H" emacs-backward-word
+# bindkey -M viins "^L" emacs-forward-word
+bindkey -M viins "^K" history-substring-search-up
+bindkey -M viins "^J" history-substring-search-down
 # }}}
 
 ############## Functions {{{
