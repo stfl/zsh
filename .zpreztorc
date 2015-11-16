@@ -34,9 +34,9 @@ zstyle ':prezto:load' pmodule \
   'syntax-highlighting' \
   'rsync' \
   'git' \
+  'fasd' \
   'tmux' \
   'ssh' \
-  'fasd' \
   'archive' \
   'wakeonlan' \
   'command-not-found' \

@@ -45,13 +45,12 @@ alias peerflix='peerflix --vlc'
 #}}}
 
 # enable quick dir and file navigation in shell
-# eval "$(fasd --init auto)"
 # alias j is set to quick cd in prezto
-alias v='fasd -f -e vim' # quick opening files with vim
-alias gv='fasd -f -e gvim' # quick opening files with vim
-alias jv='fasd -sif -e vim' # quick select for opening
-alias jgv='fasd -sif -e gvim' # quick select for opening
-alias jf='fasd -sif'     # interactive file selection
+# alias v='fasd -f -e vim' # quick opening files with vim
+# alias gv='fasd -f -e gvim' # quick opening files with vim
+# alias jv='fasd -sif -e vim' # quick select for opening
+# alias jgv='fasd -sif -e gvim' # quick select for opening
+# alias jf='fasd -sif'     # interactive file selection
 
 # }}}
 
@@ -66,6 +65,9 @@ bindkey -M viins 'jk' vi-cmd-mode
 bindkey -M viins "^K" history-substring-search-up
 bindkey -M viins "^J" history-substring-search-down
 bindkey "^W" backward-kill-word # vi-backward-kill-word
+# bindkey "^X^S" prepend-sudo
+bindkey "^P" fzf-cd-widget
+# bindkey "^P" fzf-file-widget
 # }}}
 
 ############## Functions {{{
@@ -139,7 +141,40 @@ verlt() {
     [ "$1" = "$2" ] && return 1 || verlte $1 $2
 }
 
+# fzf functions {{{
+# https://github.com/junegunn/fzf/wiki/examples
+z() {
+  local dir
+  dir="$(fasd -Rdl "$1" | fzf-tmux -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+}
+v() {
+   local file
+   file="$(fasd -Rfl "$1" | fzf-tmux -1 -0 --no-sort +m)" && vi "${file}" || return 1
+}
 
+# fe [FUZZY PATTERN] - Open the selected file with the default editor
+#   - Bypass fuzzy finder if there's only one match (--select-1)
+#   - Exit if there's no match (--exit-0)
+fe() {
+  local file
+  file=$(fzf-tmux --query="$1" --select-1 --exit-0)
+  [ -n "$file" ] && ${EDITOR:-vim} "$file"
+}
+
+# fd - cd to selected directory
+fd() {
+  local dir
+  dir=$(find ${1:-*} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+# fda - including hidden directories
+fda() {
+  local dir
+  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+}
+# }}}
 # }}}
 
 ############## completion {{{
@@ -151,3 +186,4 @@ zstyle ':completion:*:hosts' hosts $_ssh_config
 # }}}
 
 source ~/.zprofile
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
