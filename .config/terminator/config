@@ -5,8 +5,10 @@
 [keybindings]
   cycle_prev = <Shift>Tab
   go_up = <Shift><Control>k
-  next_tab = <Shift><Control>Tab
+  next_tab = <Shift><Control>n
+  prev_tab = <Shift><Control>b
   go_down = <Shift><Control>j
+  cycle_next = <Shift><Control>a
   go_right = <Shift><Control>l
   go_left = <Shift><Control>h
 [profiles]
