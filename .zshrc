@@ -143,6 +143,10 @@ verlt() {
 
 # fzf functions {{{
 # https://github.com/junegunn/fzf/wiki/examples
+
+command -v ag 2>&1 >/dev/null && \
+   export FZF_DEFAULT_COMMAND='ag -g ""'
+
 z() {
   local dir
   dir="$(fasd -Rdl "$1" | fzf-tmux -1 -0 --no-sort +m)" && cd "${dir}" || return 1
