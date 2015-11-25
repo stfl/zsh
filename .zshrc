@@ -36,7 +36,7 @@ alias ai='sudo apt-get install'
 alias ac='apt-cache'
 
 # alias find='noglob find -not -iwholename "*.svn" -path'
-emulate bash -c 'runise() { source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; }'
+emulate bash -c 'runise() { source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise;}'
 alias peerflix='peerflix --vlc'
 #}}}
 
@@ -118,7 +118,7 @@ ssh_config_tmp() {
 }
 
 ssh-copy-id() {
-   ssh $1 'cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_*.pub
+   ssh $1 'mkdir ~/.ssh; cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_*.pub
 }
 
 imv() {
