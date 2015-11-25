@@ -24,9 +24,6 @@ alias gvim='gvim --remote-tab'
 alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
 
-#files are .ssh/config and all in ~/.ssh/config.d
-alias ssh='ssh -F <(setopt localoptions nonomatch; cat ~/.ssh/config ~/.ssh/config.d/* 2> /dev/null)'
-alias scp='noglob scp_wrap -F <(cat ~/.ssh/config ~/.ssh/config.d/* 2> /dev/null)'
 
 # debian apt-get aliases
 # {{{
@@ -87,10 +84,8 @@ vcsh_write_auto_commit() {
 
 # update all vcsh repos
 function vcsh_up {
+   vcsh pull
    for repo in $(vcsh list); do
-      # [[ -z $repo ]] && continue
-      echo -e "\nupdating vcsh repo: $(color green)$repo$(color)"
-      vcsh $repo pull origin master
       vcsh $repo config branch.master.remote origin
       vcsh $repo config branch.master.merge refs/heads/master
       vcsh write-gitignore $repo
@@ -108,6 +103,18 @@ function scp_wrap {
      (*) args+=(${~i}) ;;
   esac; done
   command scp "${(@)args}"
+}
+
+#files are .ssh/config and all in ~/.ssh/config.d
+alias ssh='ssh_config_tmp; ssh -F ~/.ssh/config.tmp'
+alias scp='ssh_config_tmp; noglob scp_wrap -F ~/.ssh/config.tmp'
+
+ssh_config_tmp() {
+   setopt localoptions nonomatch null_glob
+   cat ~/.ssh/config 2>/dev/null >| ~/.ssh/config.tmp
+   cat ~/.ssh/config.d/* 2>/dev/null >> ~/.ssh/config.tmp
+   # cat ~/.ssh/config.tmp
+   # rm -f ~/.ssh/config.tmp
 }
 
 ssh-copy-id() {
