@@ -22,8 +22,7 @@ alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
 
 #files are .ssh/config and all in ~/.ssh/config.d
-alias ssh='ssh -F <(setopt localoptions nonomatch nocshnullglob; \
-   cat ~/.ssh/config ~/.ssh/config.d/* 2> /dev/null)'
+alias ssh='ssh -F <(setopt localoptions nonomatch; cat ~/.ssh/config ~/.ssh/config.d/* 2> /dev/null)'
 alias scp='noglob scp_wrap -F <(cat ~/.ssh/config ~/.ssh/config.d/* 2> /dev/null)'
 
 # debian apt-get aliases
