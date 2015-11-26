@@ -71,12 +71,12 @@ bindkey "^P" fzf-cd-widget
 
 ############## Functions {{{
 # vcsh commit and push
-function vcsh_cp
-{
-   [[ $1 == "-h" ]] && echo "vcsh_cp <repo> <commit text>"
-   vcsh $1 commit -am $2
-   vcsh $1 push
-}
+# function vcsh_cp
+# {
+   # [[ $1 == "-h" ]] && echo "vcsh_cp <repo> <commit text>"
+   # vcsh $1 commit -am $2
+   # vcsh $1 push
+# }
 
 # write auto-commit post-commit hook to vcsh repo
 vcsh_write_auto_commit() {
@@ -144,17 +144,24 @@ imv() {
 # verlte 2.5.7 2.5.6 && echo "yes" || echo "no" # no
 # verlt 2.4.8 2.4.10 && echo "yes" || echo "no" # yes
 verlte() {
-    [  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
+   if [ "-h" == "$1" ]; then
+      echo "verlte 2.5.7 2.5.6 && echo yes || echo no # (<= no)"
+      return
+   fi
+   [  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
 }
 verlt() {
-    [ "$1" = "$2" ] && return 1 || verlte $1 $2
+   if [ "-h" == "$1" ]; then
+      echo "verlt 2.4.8 2.4.10 && echo yes || echo no # (<= yes)"
+      return
+   fi
+   [ "$1" = "$2" ] && return 1 || verlte $1 $2
 }
 
 # fzf functions {{{
 # https://github.com/junegunn/fzf/wiki/examples
 
-command -v ag 2>&1 >/dev/null && \
-   export FZF_DEFAULT_COMMAND='ag -g ""'
+command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag -g ""'
 
 z() {
   local dir
