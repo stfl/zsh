@@ -41,7 +41,7 @@ alias ac='apt-cache'
 
 # alias find='noglob find -not -iwholename "*.svn" -path'
 emulate bash -c 'runise() { source /home/Xilinx/14.7/ISE_DS/settings64.sh; ise; }'
-alias peerflix='peerflix --vlc'
+# alias peerflix='peerflix --vlc'
 #}}}
 
 # enable quick dir and file navigation in shell
