@@ -32,6 +32,7 @@ alias aup='sudo apt-get update'
 alias {aupg,aug}='sudo apt-get upgrade' # multiple aliases -> IMPORTANT without space in {,}
 alias {adupg,adg}='sudo apt-get dist-upgrade'
 alias chup='sudo apt-get update && sudo apt-get upgrade'
+alias chdup='sudo apt-get update && sudo apt-get dist-upgrade'
 alias ai='sudo apt-get install'
 alias ac='apt-cache'
 
