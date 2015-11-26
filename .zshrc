@@ -23,7 +23,7 @@ fi
 alias gvim='gvim --remote-tab'
 alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
-
+alias wget='wget --no-check-certificate'
 
 # debian apt-get aliases
 # {{{
