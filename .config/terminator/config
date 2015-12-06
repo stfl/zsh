@@ -3,7 +3,6 @@
   title_transmit_bg_color = "#d30102"
   focus = system
 [keybindings]
-  cycle_prev = <Shift>Tab
   go_up = <Shift><Control>k
   next_tab = <Shift><Control>n
   prev_tab = <Shift><Control>b
