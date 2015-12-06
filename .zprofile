@@ -17,8 +17,13 @@ fi
 # Editors
 #
 
-export EDITOR='vim'
-export VISUAL='vim'
+if command -v nvim &>/dev/null; then
+   export EDITOR='nvim'
+   export VISUAL='nvim'
+else
+   export EDITOR='vim'
+   export VISUAL='vim'
+fi
 export PAGER='less' # 'vimpager'
 alias less=$PAGER
 alias zless=$PAGER
@@ -87,6 +92,9 @@ TMPPREFIX="${TMPDIR%/}/zsh"
 if [[ ! -d "$TMPPREFIX" ]]; then
   mkdir -p "$TMPPREFIX"
 fi
+
+# make anacron work for user set up
+/usr/sbin/anacron -s -t ${HOME}/.anacron/etc/anacrontab -S ${HOME}/.anacron/spool
 
 # source frq specifics if present
 [[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
