@@ -24,6 +24,7 @@ alias gvim='gvim --remote-tab'
 alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
 alias wget='wget --no-check-certificate'
+command -v nvim &>/dev/null && alias vim='nvim'
 
 # debian apt-get aliases
 # {{{
