@@ -34,7 +34,7 @@ alias zless=$PAGER
 #
 
 # fixes strange cursor position / formating bug
-export LC_ALL=en_US.UTF-8  
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 #
@@ -94,7 +94,9 @@ if [[ ! -d "$TMPPREFIX" ]]; then
 fi
 
 # make anacron work for user set up
-/usr/sbin/anacron -s -t ${HOME}/.anacron/etc/anacrontab -S ${HOME}/.anacron/spool
+if [ -d ${HOME}/.anacron/etc ]; then
+   /usr/sbin/anacron -s -t ${HOME}/.anacron/etc/anacrontab -S ${HOME}/.anacron/spool
+fi
 
 # source frq specifics if present
 [[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq

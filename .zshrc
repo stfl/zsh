@@ -202,8 +202,9 @@ fda() {
 
 ############## completion {{{
 # add hosts completion for .ssh/config.d/ files
-zstyle -s ':completion:*:hosts' hosts _ssh_config
-[[ -d ~/.ssh/config.d ]] && _ssh_config+=($(cat ~/.ssh/config.d/* | sed -ne 's/Host[=\t ]//Ip'))
+# zstyle -s ':completion:*:hosts' hosts _ssh_config
+ssh_config_tmp # make the ssh_config.tmp once
+[[ -e ~/.ssh/config.tmp ]] &&  _ssh_config+=($(cat ~/.ssh/config.tmp | sed -ne 's/Host[=\t ]//Ip'))
 zstyle ':completion:*:hosts' hosts $_ssh_config
 
 # }}}
