@@ -107,7 +107,7 @@ function scp_wrap {
      (*:*) args+=($i) ;;
      (*) args+=(${~i}) ;;
   esac; done
-  command scp "${(@)args}"
+  command scp ${=args} # enables forces white space splitting -> works when mutlipe input files are given - or globing
 }
 
 #files are .ssh/config and all in ~/.ssh/config.d
