@@ -17,8 +17,13 @@ fi
 # Editors
 #
 
-export EDITOR='vim'
-export VISUAL='vim'
+if command -v nvim &>/dev/null; then
+   export EDITOR='nvim'
+   export VISUAL='nvim'
+else
+   export EDITOR='vim'
+   export VISUAL='vim'
+fi
 export PAGER='less' # 'vimpager'
 alias less=$PAGER
 alias zless=$PAGER
@@ -29,7 +34,7 @@ alias zless=$PAGER
 #
 
 # fixes strange cursor position / formating bug
-export LC_ALL=en_US.UTF-8  
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 #
@@ -86,6 +91,11 @@ fi
 TMPPREFIX="${TMPDIR%/}/zsh"
 if [[ ! -d "$TMPPREFIX" ]]; then
   mkdir -p "$TMPPREFIX"
+fi
+
+# make anacron work for user set up
+if [ -d ${HOME}/.anacron/etc ]; then
+   /usr/sbin/anacron -s -t ${HOME}/.anacron/etc/anacrontab -S ${HOME}/.anacron/spool
 fi
 
 # source frq specifics if present

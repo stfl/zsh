@@ -23,7 +23,8 @@ fi
 alias gvim='gvim --remote-tab'
 alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
-
+alias wget='wget --no-check-certificate'
+command -v nvim &>/dev/null && alias vim='nvim'
 
 # debian apt-get aliases
 # {{{
@@ -32,6 +33,7 @@ alias aup='sudo apt-get update'
 alias {aupg,aug}='sudo apt-get upgrade' # multiple aliases -> IMPORTANT without space in {,}
 alias {adupg,adg}='sudo apt-get dist-upgrade'
 alias chup='sudo apt-get update && sudo apt-get upgrade'
+alias chdup='sudo apt-get update && sudo apt-get dist-upgrade'
 alias ai='sudo apt-get install'
 alias ac='apt-cache'
 
@@ -105,7 +107,7 @@ function scp_wrap {
      (*:*) args+=($i) ;;
      (*) args+=(${~i}) ;;
   esac; done
-  command scp "${(@)args}"
+  command scp ${=args} # enables forces white space splitting -> works when mutlipe input files are given - or globing
 }
 
 #files are .ssh/config and all in ~/.ssh/config.d
@@ -200,8 +202,9 @@ fda() {
 
 ############## completion {{{
 # add hosts completion for .ssh/config.d/ files
-zstyle -s ':completion:*:hosts' hosts _ssh_config
-[[ -d ~/.ssh/config.d ]] && _ssh_config+=($(cat ~/.ssh/config.d/* | sed -ne 's/Host[=\t ]//Ip'))
+# zstyle -s ':completion:*:hosts' hosts _ssh_config
+ssh_config_tmp # make the ssh_config.tmp once
+[[ -e ~/.ssh/config.tmp ]] &&  _ssh_config+=($(cat ~/.ssh/config.tmp | sed -ne 's/Host[=\t ]//Ip'))
 zstyle ':completion:*:hosts' hosts $_ssh_config
 
 # }}}
