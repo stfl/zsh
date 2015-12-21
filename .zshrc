@@ -24,6 +24,7 @@ alias gvim='gvim --remote-tab'
 alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
 alias wget='wget --no-check-certificate'
+alias vi='vim'
 command -v nvim &>/dev/null && alias vim='nvim'
 
 # debian apt-get aliases
@@ -171,7 +172,7 @@ z() {
 }
 v() {
    local file
-   file="$(fasd -Rfl "$1" | fzf-tmux -1 -0 --no-sort +m)" && vi "${file}" || return 1
+   file="$(fasd -Rfl "$1" | fzf-tmux -1 -0 --no-sort +m)" && vim "${file}" || return 1
 }
 
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
