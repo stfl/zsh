@@ -83,20 +83,24 @@ bindkey "^P" fzf-cd-widget
 
 # write auto-commit post-commit hook to vcsh repo
 vcsh_write_auto_commit() {
-   echo "#\!/bin/sh\necho "running post-commit hook"\ngit push origin master" \
-      >| ~/.config/vcsh/repo.d/$1.git/hooks/post-commit
-   chmod 700 ~/.config/vcsh/repo.d/$1.git/hooks/post-commit
+   if [ ! -f ~/.config/vcsh/repo.d/$1.git/hooks/post-commit ] || [[ "$2" -eq "-f" ]]; then
+      echo "#\!/bin/sh\necho "running post-commit hook"\ngit push origin master" \
+         >| ~/.config/vcsh/repo.d/$1.git/hooks/post-commit
+      chmod 700 ~/.config/vcsh/repo.d/$1.git/hooks/post-commit
+   fi
 }
 
 # update all vcsh repos
 function vcsh_up {
-   vcsh pull
+   # vcsh pull
    for repo in $(vcsh list); do
+      ( vcsh $repo pull; \
+        vcsh write-gitignore $repo) &
       vcsh $repo config branch.master.remote origin
       vcsh $repo config branch.master.merge refs/heads/master
-      vcsh write-gitignore $repo
       vcsh_write_auto_commit $repo
    done
+   wait
 }
 
 
