@@ -147,15 +147,20 @@ imv() {
 # verlte 2.5.7 2.5.6 && echo "yes" || echo "no" # no
 # verlt 2.4.8 2.4.10 && echo "yes" || echo "no" # yes
 verlte() {
-   if [ "-h" == "$1" ]; then
-      echo "verlte 2.5.7 2.5.6 && echo yes || echo no # (<= no)"
+   if [[ "$@" -eq "0" ]] || [ "-h" -eq "$1" ]; then
+      echo "$0 2.5.7 2.5.6 && echo yes || echo no # (<= no)"
+      echo "[ \$1 -le \$2 ]"
+      echo "$0 \$min_required \$current"
       return
    fi
    [  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
 }
+alias vermin='verlte'
 verlt() {
-   if [ "-h" == "$1" ]; then
-      echo "verlt 2.4.8 2.4.10 && echo yes || echo no # (<= yes)"
+   if [[ "$@" -eq "0" ]] || [ "-h" -eq "$1" ]; then
+      echo "$0 2.4.8 2.4.10 && echo yes || echo no # (<= yes)"
+      echo "[ \$1 -lt \$2 ]"
+      echo "$0 \$last_version \$current"
       return
    fi
    [ "$1" = "$2" ] && return 1 || verlte $1 $2
