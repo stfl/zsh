@@ -1,9 +1,0 @@
-<<<<<<< HEAD
-
-# shelltitle '> |$(pwd):'
-
-caption always "%3n %t%? (%u)%?%?: %h%?"
-
-=======
-mousetrack on	
->>>>>>> fddf6dbde42a8c990f418b3b2d069ed8ec0c6d97
