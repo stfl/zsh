@@ -94,7 +94,10 @@ vcsh_write_auto_commit() {
 function vcsh_up {
    # vcsh pull
    for repo in $(vcsh list); do
-      ( vcsh $repo pull; \
+      ( vcsh $repo pull && \
+        for st in $(vcsh $repo stree list | awk '{print $2}'); do
+           vcsh $repo stree pull $st
+        done ;\
         vcsh write-gitignore $repo) &
       vcsh $repo config branch.master.remote origin
       vcsh $repo config branch.master.merge refs/heads/master
