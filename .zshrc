@@ -92,18 +92,30 @@ vcsh_write_auto_commit() {
 
 # update all vcsh repos
 function vcsh_up {
+   if [[ x"-v" == x"$1" ]]; then
+      shift
+      debug=0
+      set -x
+   fi
+   vermin 1.7.11 `git --version | awk '{print $3}'`
+   stree=$?
+   [[ 0 != $stree ]] && echo "git doesn't support stree!"
    # vcsh pull
    for repo in $(vcsh list); do
-      ( vcsh $repo pull && \
-        for st in $(vcsh $repo stree list | awk '{print $2}'); do
-           vcsh $repo stree pull $st
-        done ;\
-        vcsh write-gitignore $repo) &
+      (  vcsh $repo pull
+         if [[ 0 == $stree ]]; then
+            for st in $(vcsh $repo stree list | awk '{print $2}'); do
+               vcsh $repo stree pull $st
+            done
+         fi
+         vcsh write-gitignore $repo
+      ) &
       vcsh $repo config branch.master.remote origin
       vcsh $repo config branch.master.merge refs/heads/master
       vcsh_write_auto_commit $repo
    done
    wait
+   [[ 0 == $debug ]] && set +x
 }
 
 
@@ -153,24 +165,25 @@ imv() {
 # comparte versions - requires sort -V option!
 # verlte 2.5.7 2.5.6 && echo "yes" || echo "no" # no
 # verlt 2.4.8 2.4.10 && echo "yes" || echo "no" # yes
-verlte() {
-   if [[ "$@" -eq "0" ]] || [ "-h" -eq "$1" ]; then
+vermin verlte() {
+   if [[ "$#" == "0" ]] || [[ x"-h" == x"$1" ]]; then
       echo "$0 2.5.7 2.5.6 && echo yes || echo no # (<= no)"
       echo "[ \$1 -le \$2 ]"
       echo "$0 \$min_required \$current"
       return
    fi
    [  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
+   return $?
 }
-alias vermin='verlte'
 verlt() {
-   if [[ "$@" -eq "0" ]] || [ "-h" -eq "$1" ]; then
+   if [[ "$#" == "0" ]] || [[ x"-h" == x"$1" ]]; then
       echo "$0 2.4.8 2.4.10 && echo yes || echo no # (<= yes)"
       echo "[ \$1 -lt \$2 ]"
       echo "$0 \$last_version \$current"
       return
    fi
    [ "$1" = "$2" ] && return 1 || verlte $1 $2
+   return $?
 }
 
 # fzf functions {{{
