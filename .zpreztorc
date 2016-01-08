@@ -34,8 +34,8 @@ zstyle ':prezto:load' pmodule \
   'syntax-highlighting' \
   'rsync' \
   'git' \
+  'dpkg' \
   'fasd' \
-  'tmux' \
   'ssh' \
   'archive' \
   'wakeonlan' \
@@ -43,6 +43,7 @@ zstyle ':prezto:load' pmodule \
   'history-substring-search' \
   'utility' \
   'prompt' 
+  # 'tmux' \
 
 #
 # Editor

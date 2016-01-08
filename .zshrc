@@ -94,7 +94,10 @@ vcsh_write_auto_commit() {
 function vcsh_up {
    # vcsh pull
    for repo in $(vcsh list); do
-      ( vcsh $repo pull; \
+      ( vcsh $repo pull && \
+        for st in $(vcsh $repo stree list | awk '{print $2}'); do
+           vcsh $repo stree pull $st
+        done ;\
         vcsh write-gitignore $repo) &
       vcsh $repo config branch.master.remote origin
       vcsh $repo config branch.master.merge refs/heads/master
@@ -216,6 +219,16 @@ fda() {
 ssh_config_tmp # make the ssh_config.tmp once
 [[ -e ~/.ssh/config.tmp ]] &&  _ssh_config+=($(cat ~/.ssh/config.tmp | sed -ne 's/Host[=\t ]//Ip'))
 zstyle ':completion:*:hosts' hosts $_ssh_config
+
+#vim tags
+function _get_tags {
+  [ -f ./tags ] || return
+  local cur
+  read -l cur
+  echo $(echo $(awk -v ORS=" "  "/^${cur}/ { print \$1 }" tags))
+}
+compctl -x 'C[-1,-t]' -K _get_tags -- vim
+#end vim tags
 
 # }}}
 
