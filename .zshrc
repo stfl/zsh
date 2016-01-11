@@ -123,7 +123,8 @@ ssh_config_tmp() {
 }
 
 ssh-copy-id() {
-   ssh $1 'mkdir ~/.ssh; cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_*.pub
+   ssh $1 'mkdir ~/.ssh 2>/dev/null;
+           cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_*.pub
 }
 
 imv() {
