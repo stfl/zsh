@@ -104,14 +104,15 @@ function vcsh_up {
    [[ 0 != $stree ]] && echo "git doesn't support stree!"
    # vcsh pull
    for repo in $(vcsh list); do
-      (  vcsh $repo pull
+      (  cd ${HOME}
+         vcsh $repo pull
          if [[ 0 == $stree ]]; then
             for st in $(vcsh $repo stree list | awk '{print $2}'); do
                vcsh $repo stree pull $st
             done
          fi
          vcsh write-gitignore $repo
-      ) &
+      ) & # make the whole thing parallel !!!
       vcsh $repo config branch.master.remote origin
       vcsh $repo config branch.master.merge refs/heads/master
       vcsh_write_auto_commit $repo
