@@ -1,0 +1,30 @@
+# ~/.XCompose
+# This file defines custom Compose sequences for Unicode characters
+
+include "%L"   # import the default Compose file for your locale
+
+# To put some stuff onto compose key strokes:
+# <Multi_key> <minus> <greater> : "→" U2192 # Compose - >
+# <Multi_key> <colon> <parenright> : "☺" U263A   # Compose : )
+# <Multi_key> <b> <t> <w> : "by the way" # Compose b t w
+# <Multi_key> <less> <p> : "<p></p>" # Compose < p
+
+<Multi_key> <a> <a> : "ä"
+<Multi_key> <a> <e> : "ä"
+<Multi_key> <A> <A> : "Ä"
+<Multi_key> <A> <E> : "Ä"
+<Multi_key> <A> <e> : "Ä"
+
+<Multi_key> <o> <o> : "ö"
+<Multi_key> <o> <e> : "ö"
+<Multi_key> <O> <O> : "Ö"
+<Multi_key> <O> <E> : "Ö"
+<Multi_key> <O> <e> : "Ö"
+
+<Multi_key> <u> <u> : "ü"
+<Multi_key> <u> <e> : "ü"
+<Multi_key> <U> <U> : "Ü"
+<Multi_key> <U> <E> : "Ü"
+<Multi_key> <U> <e> : "Ü"
+
+<Multi_key> <e> <e> : "€"
