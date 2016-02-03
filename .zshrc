@@ -90,8 +90,16 @@ vcsh_write_auto_commit() {
    fi
 }
 
+function vcsh_up(){
+   setopt localtraps
+   vcsh_up_forked $@ &
+   child_pid=$!
+   trap "echo exiting...; kill -- -$(ps -o pgid= $child_pid | grep -o '[0-9]*'); wait" INT
+   wait
+}
+
 # update all vcsh repos
-function vcsh_up {
+function vcsh_up_forked {
    echo "vcsh local status:"
    vcsh status
    if [[ x"-v" == x"$1" ]]; then
@@ -106,10 +114,17 @@ function vcsh_up {
    for repo in $(vcsh list); do
       (  cd ${HOME}
          vcsh $repo pull
+         local ret=$?
          if [[ 0 == $stree ]]; then
             for st in $(vcsh $repo stree list | awk '{print $2}'); do
                vcsh $repo stree pull $st
+               let "ret+=$?"
             done
+         fi
+         if [[ "$ret" -gt "0" ]]; then
+            echo -e "$(color red)$repo failed$(color)"
+         else
+            echo -e "$(color green)$repo successfull$(color)"
          fi
          vcsh write-gitignore $repo
       ) & # make the whole thing parallel !!!
