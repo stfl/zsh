@@ -37,6 +37,7 @@ alias chup='sudo apt-get update && sudo apt-get upgrade'
 alias chdup='sudo apt-get update && sudo apt-get dist-upgrade'
 alias ai='sudo apt-get install'
 alias ac='apt-cache'
+alias debia='sudo apt-get install && sudo apt-mark auto'
 
 # alias find='noglob find -not -iwholename "*.svn" -path'
 emulate bash -c 'runise() { \
