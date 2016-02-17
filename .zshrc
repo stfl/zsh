@@ -37,7 +37,7 @@ alias chup='sudo apt-get update && sudo apt-get upgrade'
 alias chdup='sudo apt-get update && sudo apt-get dist-upgrade'
 alias ai='sudo apt-get install'
 alias ac='apt-cache'
-alias debia='sudo apt-get install && sudo apt-mark auto'
+alias deba='sudo apt-mark auto'
 
 # alias find='noglob find -not -iwholename "*.svn" -path'
 emulate bash -c 'runise() { \
@@ -166,6 +166,41 @@ ssh_config_tmp() {
 ssh-copy-id() {
    ssh $1 'mkdir ~/.ssh 2>/dev/null;
            cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_*.pub
+}
+
+telnet()
+{
+   avail_hosts=$(cat ~/.ssh/config.tmp |\
+      sed -ne 's/Host[=\t ]//Ip' |\
+      sed -ne '/^[^#]/p' |\
+      tr '\n' ' ' )
+   avail_array=(${=avail_hosts})                                     # make array
+   if [[ ${avail_array[(i)${1}]} > $#avail_array ]]; then            # not in array
+      command telnet $@
+   else
+      echo lookup $1 in ssh hosts
+      connect=$1
+      shift
+      local fifo=/tmp/hosts
+      mkfifo $fifo
+      exec 6<>$fifo
+      cat ~/.ssh/config.tmp |\
+         sed -ne 's/Host[=\t ]//Ip' -ne 's/hostname[=\t ]//Ip' |\
+         sed -ne '/^[ \t]*#/!p' >&6
+      while true; do                                              # we already know it's in there
+         read host <&6
+         read ip <&6
+         ha=(${=host})
+         if [[ ${ha[(i)${connect}]} < $#ha ]]; then
+            echo found $ip
+            connect=$ip
+            break
+         fi
+      done
+      exec 6<&-                                                      # closing the fd
+      rm -f $fifo
+      command telnet $connect $@
+   fi
 }
 
 imv() {
