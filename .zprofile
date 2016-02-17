@@ -94,9 +94,12 @@ if [[ ! -d "$TMPPREFIX" ]]; then
 fi
 
 # make anacron work for user set up
-if [ -d ${HOME}/.anacron/etc ]; then
-   /usr/sbin/anacron -s -t ${HOME}/.anacron/etc/anacrontab -S ${HOME}/.anacron/spool
-fi
+# if [ -d ${HOME}/.anacron/etc ]; then
+   # /usr/sbin/anacron -s -t ${HOME}/.anacron/etc/anacrontab -S ${HOME}/.anacron/spool
+# fi
+
+# get some more sophisticated dir colors :D
+eval `dircolors ~/.config/dircolors.256dark`
 
 # source frq specifics if present
 [[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
