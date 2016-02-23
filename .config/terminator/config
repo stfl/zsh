@@ -32,7 +32,7 @@
     cursor_color = "#002b36"
     foreground_color = "#002b36"
     scroll_on_output = False
-    font = Anonymous Pro for Powerline 11
+    font = Anonymous Pro for Powerline 9
     background_color = "#eee8d5"
 [layouts]
   [[default]]
