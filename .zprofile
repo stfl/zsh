@@ -51,15 +51,22 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  $HOME/.local/{bin,sbin}
-  $HOME/{bin,mybin}
+  ${HOME}/.local/{usr/,}{bin,sbin}
+  ${HOME}/{bin,mybin}
+  ${HOME}/.linuxbrew/bin
   /usr/local/{bin,sbin}
   /usr/{bin,sbin}
   /{bin,sbin}
   $path
 )
 
-export LD_LIBRARY_PATH="$HOME/.local/lib":$LD_LIBRARY_PATH
+# add only once!
+local add_ld
+add_ld="$HOME/.local/lib:$HOME/.local/usr/lib"
+if test "${LD_LIBRARY_PATH#*$add_ld}" == "$LD_LIBRARY_PATH"
+then
+   export LD_LIBRARY_PATH=$add_ld:$LD_LIBRARY_PATH
+fi
 
 #export PATH=$PATH:/home/stefan/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
 #

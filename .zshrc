@@ -255,15 +255,20 @@ verlt()
 # fzf functions {{{
 # https://github.com/junegunn/fzf/wiki/examples
 
-command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag -g ""'
+command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag -g --hidden""'
 
-z() {
+j() {
   local dir
   dir="$(fasd -Rdl "$1" | fzf-tmux -1 -0 --no-sort +m)" && cd "${dir}" || return 1
 }
 v() {
    local file
    file="$(fasd -Rfl "$1" | fzf-tmux -1 -0 --no-sort +m)" && vim "${file}" || return 1
+}
+jj() {
+   local dest
+   dest=$(dirs | sed "s/ /\n/g" | fzf-tmux) && cd ${~dest} || return 1
+   # requires ~ to remove surrounding ''
 }
 
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
