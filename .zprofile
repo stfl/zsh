@@ -61,10 +61,10 @@ path=(
 )
 
 # add only once!
-local add_ld
-add_ld="$HOME/.local/lib:$HOME/.local/usr/lib"
-if test "${LD_LIBRARY_PATH#*$add_ld}" == "$LD_LIBRARY_PATH"
+local add_ld="$HOME/.local/lib:$HOME/.local/usr/lib"
+if test "${LD_LIBRARY_PATH#*$add_ld}" != "$LD_LIBRARY_PATH"
 then
+else
    export LD_LIBRARY_PATH=$add_ld:$LD_LIBRARY_PATH
 fi
 
