@@ -254,8 +254,8 @@ verlt()
 
 # fzf functions {{{
 # https://github.com/junegunn/fzf/wiki/examples
-
 command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag -g --hidden""'
+command -v fasd &>/dev/null && eval "$(fasd --init auto)"
 
 j() {
   local dir

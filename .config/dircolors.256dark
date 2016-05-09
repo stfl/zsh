@@ -222,8 +222,9 @@ EXEC 00;38;5;64
 .csv             00;38;5;245
 
 # "unimportant" files as logs and backups (base01)
-.log        00;38;5;240
-.bak        00;38;5;240
+# DIR 00;38;5;33 # directory 01;34
+.log        00;38;5;40 # make them like grey
+.bak        00;38;5;40
 .aux        00;38;5;240
 .lof        00;38;5;240
 .lol        00;38;5;240
