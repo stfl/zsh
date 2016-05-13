@@ -174,8 +174,6 @@
       <property name="override" type="bool" value="true"/>
       <property name="&lt;Primary&gt;&lt;Super&gt;Down" type="string" value="move_window_down_workspace_key"/>
       <property name="&lt;Primary&gt;&lt;Super&gt;Up" type="string" value="move_window_up_workspace_key"/>
-      <property name="&lt;Super&gt;Left" type="string" value="tile_left_key"/>
-      <property name="&lt;Super&gt;Right" type="string" value="tile_right_key"/>
       <property name="&lt;Super&gt;Up" type="string" value="maximize_window_key"/>
       <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;&lt;Super&gt;c" type="string" value="add_workspace_key"/>
       <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;&lt;Super&gt;d" type="string" value="del_workspace_key"/>
@@ -185,6 +183,8 @@
       <property name="&lt;Alt&gt;Tab" type="string" value="cycle_windows_key"/>
       <property name="&lt;Shift&gt;&lt;Alt&gt;ISO_Left_Tab" type="string" value="cycle_reverse_windows_key"/>
       <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;&lt;Super&gt;j" type="string" value="next_workspace_key"/>
+      <property name="&lt;Super&gt;Left" type="string" value="tile_left_key"/>
+      <property name="&lt;Super&gt;Right" type="string" value="tile_right_key"/>
     </property>
   </property>
   <property name="providers" type="array">

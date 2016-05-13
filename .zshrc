@@ -256,51 +256,65 @@ verlt()
 
 # fzf functions {{{
 # https://github.com/junegunn/fzf/wiki/examples
+command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag -g --hidden""'
+command -v fasd &>/dev/null && eval "$(fasd --init auto)"
 
-command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag -g ""'
-
-z() {
+j() {
   local dir
-  dir="$(fasd -Rdl "$1" | fzf-tmux -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+  dir="$(fasd -Rdl "$1" | fzf-tmux -1 -0 --no-sort +m)" \
+     && cd "${dir}" \
+     || return 1
 }
 v() {
    local file
-   file="$(fasd -Rfl "$1" | fzf-tmux -1 -0 --no-sort +m)" && vim "${file}" || return 1
+   file="$(fasd -Rfl "$1" | fzf-tmux -1 -0 --no-sort -m)" \
+      && vim -p ${=file} \
+      || return 1
+}
+jj() {
+   local dest
+   dest=$(dirs | sed "s/ /\n/g" | fzf-tmux) \
+      && cd ${~dest} \
+      || return 1
+   # requires ~ to remove surrounding ''
 }
 
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
 fe() {
-  local file
-  file=$(fzf-tmux --query="$1" --select-1 --exit-0)
-  [ -n "$file" ] && ${EDITOR:-vim} "$file"
+   local file
+   # use multi select with <TAB>
+   file=$(fzf-tmux --query="$1" --select-1 --exit-0 -m) \
+      && vim -p ${=file} \
+      || return 1
 }
 
 # fd - cd to selected directory
 fd() {
-  local dir
-  [[ $# == 0 ]] && 1="."
-  dir=$(find ${1:-*} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf-tmux +m) && cd "$dir"
+   local dir
+   dir=$(find ${1:-.} -path '*/\.*' -prune \
+      -o -type d -print 2> /dev/null | fzf-tmux +m) \
+      && cd "$dir" \
+      || return 1
 }
 
 # fda - including hidden directories
 fda() {
-  local dir
-  [[ $# == 0 ]] && 1="."
-  dir=$(find ${1:-.} -type d 2> /dev/null | fzf-tmux +m) && cd "$dir"
+   local dir
+   dir=$(find ${1:-.} -type d 2> /dev/null | fzf-tmux +m) \
+      && cd "$dir" \
+      || return 1
 }
 
 # ftags - search ctags
 ftags() {
-  local line
-  [ -e tags ] &&
-  line=$(
-    awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' tags |
-    cut -c1-80 | fzf --nth=1,2
-  ) && $EDITOR $(cut -f3 <<< "$line") -c "set nocst" \
-                                      -c "silent tag $(cut -f2 <<< "$line")"
+   local line
+   [ -e tags ] && line=$(
+      awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' tags |
+      cut -c1-80 | fzf --nth=1,2
+   ) && $EDITOR $(cut -f3 <<< "$line") -c "set nocst" -c "silent tag $(cut -f2 <<< "$line")" \
+      || return 1
 }
 # }}}
 # }}}

@@ -1,3 +1,4 @@
+# vim: ft=zsh
 #
 # Sets Prezto options.
 #
@@ -35,14 +36,14 @@ zstyle ':prezto:load' pmodule \
   'rsync' \
   'git' \
   'dpkg' \
-  'fasd' \
   'ssh' \
   'archive' \
   'wakeonlan' \
   'command-not-found' \
   'history-substring-search' \
   'utility' \
-  'prompt' 
+  'prompt'
+  # 'fasd' \
   # 'tmux' \
 
 #
@@ -128,12 +129,18 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 
 # Set syntax highlighters.
 # By default, only the main highlighter is enabled.
-zstyle ':prezto:module:syntax-highlighting' highlighters \
-  'main' \
-  'brackets' \
-  'pattern' \
-  'root'
-  # 'cursor' \
+
+highlighters=('main' 'brackets' 'pattern' 'root')
+if [[ -z $SSH_CLIENT && -z $SSH_TTY ]]; then
+   # get current terminal version
+   termver=($(=$(ps -p $(ps -p $$ -o ppid=) o args=) --version | head -n1))
+   if [ "$termver[1]" != "terminator" ]; then
+      # no cursor hi for terminator needed... and messes it up on older versions..
+      highlighters+=('cursor')
+   fi
+fi
+zstyle ':prezto:module:syntax-highlighting' highlighters $highlighters
+
 #
 # Set syntax highlighting styles.
 # zstyle ':prezto:module:syntax-highlighting' styles \
