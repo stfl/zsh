@@ -1,17 +1,10 @@
 #
 # Executes commands at login pre-zshrc.
 #
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
 
 #
 # Browser
 #
-
-if [[ "$OSTYPE" == darwin* ]]; then
-  export BROWSER='open'
-fi
 
 #
 # Editors
@@ -61,7 +54,6 @@ path=(
 
 export LD_LIBRARY_PATH="$HOME/.local/lib":$LD_LIBRARY_PATH
 
-#export PATH=$PATH:/home/stefan/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
 #
 # Less
 #
