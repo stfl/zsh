@@ -13,6 +13,8 @@ fi
 
 ############ vaiables {{{
 
+setopt RM_STAR_WAIT
+
 # }}}
 
 ############ aliases {{{
