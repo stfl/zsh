@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 color-usage() {
 cat <<"USAGE"
 Usage: color [OPTIONS] <color>
