@@ -23,7 +23,7 @@ setopt RM_STAR_WAIT
 #alias snas='ssh nas sudo halt -p'
 #alias mountrpi="sshfs -o idmap=user -o port=2223 stefan@192.168.0.151:/ /media/rpi/"
 alias gvim='gvim --remote-tab'
-# alias tmux='TERM=xterm-256color tmux'
+alias tmux='TERM=xterm-256color tmux'
 alias zreload='. ~/.zshrc && . ~/.zprofile'
 alias wget='wget --no-check-certificate'
 alias vi='vim'
@@ -254,9 +254,30 @@ verlt()
    return $?
 }
 
+# print full file names
+lf()
+{
+   if [[ "$#" == "0" ]]; then
+      # current dir
+      local dir="$PWD/*"
+   elif [[ "$#" == "1" ]]; then
+      if [[ -d $1 ]]; then
+         # dir target
+         local dir=${PWD}/${~@}/*
+      else
+         # one file target
+         local dir=$PWD/$1
+      fi
+   fi
+   ll -d $~dir
+}
+
 # fzf functions {{{
 # https://github.com/junegunn/fzf/wiki/examples
-command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag -g --hidden""'
+command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
+export FZF_DEFAULT_OPTS="--reverse --inline-info"
+export FZF_TMUX_HEIGHT="30%"
+
 command -v fasd &>/dev/null && eval "$(fasd --init auto)"
 
 j() {
