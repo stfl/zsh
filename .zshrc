@@ -254,6 +254,24 @@ verlt()
    return $?
 }
 
+# print full file names
+lf()
+{
+   if [[ "$#" == "0" ]]; then
+      # current dir
+      local dir="$PWD/*"
+   elif [[ "$#" == "1" ]]; then
+      if [[ -d $1 ]]; then
+         # dir target
+         local dir=${PWD}/${~@}/*
+      else
+         # one file target
+         local dir=$PWD/$1
+      fi
+   fi
+   ll -d $~dir
+}
+
 # fzf functions {{{
 # https://github.com/junegunn/fzf/wiki/examples
 command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
