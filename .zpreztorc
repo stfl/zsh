@@ -131,14 +131,14 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 # By default, only the main highlighter is enabled.
 
 highlighters=('main' 'brackets' 'pattern' 'root')
-if [[ -z $SSH_CLIENT && -z $SSH_TTY ]]; then
-   # get current terminal version
-   termver=($(=$(ps -p $(ps -p $$ -o ppid=) o args=) --version | head -n1))
-   if [ "$termver[1]" != "terminator" ]; then
-      # no cursor hi for terminator needed... and messes it up on older versions..
-      highlighters+=('cursor')
-   fi
-fi
+# if [[ -z $SSH_CLIENT && -z $SSH_TTY ]]; then
+   # # get current terminal version
+   # termver=($(=$(ps -p $(ps -p $$ -o ppid=) o args=) --version | head -n1))
+   # if [ "$termver[1]" != "terminator" ]; then
+      # # no cursor hi for terminator needed... and messes it up on older versions..
+      # highlighters+=('cursor')
+   # fi
+# fi
 zstyle ':prezto:module:syntax-highlighting' highlighters $highlighters
 
 #
