@@ -280,6 +280,19 @@ lf()
    ll -d $~dir
 }
 
+# run mr in home dir and colorize output
+mr() 
+{
+   if [[ $1 == up ]]; then
+      (cd ~
+      GREP_COLORS="mc=01;31"
+      command mr -j 5 up 2>&1 | egrep --colour "\bfailed\b|$"
+      )
+   else
+      command mr $@
+   fi
+}
+
 # fzf functions {{{
 # https://github.com/junegunn/fzf/wiki/examples
 command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
