@@ -28,6 +28,8 @@ alias zreload='. ~/.zshrc && . ~/.zprofile'
 alias wget='wget --no-check-certificate'
 alias vi='vim'
 command -v nvim &>/dev/null && alias vim='nvim'
+alias ag="ag --hidden -p $HOME/.config/agignore"
+
 
 # debian apt-get aliases
 # {{{
@@ -67,8 +69,8 @@ emulate bash -c 'runise() { \
 # bindkey -M emacs 'jk' vi-cmd-mode
 
 bindkey -M viins 'jk' vi-cmd-mode
-bindkey -M viins "^K" history-substring-search-up
-bindkey -M viins "^J" history-substring-search-down
+# bindkey -M viins "^K" history-substring-search-up
+# bindkey -M viins "^J" history-substring-search-down
 bindkey "^W" backward-kill-word # vi-backward-kill-word
 # bindkey "^X^S" prepend-sudo
 bindkey "^P" fzf-cd-widget
