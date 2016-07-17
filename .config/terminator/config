@@ -1,5 +1,3 @@
-# vi: ft=desktop
-
 [global_config]
   enabled_plugins = ActivityWatch, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   focus = system

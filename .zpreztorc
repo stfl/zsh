@@ -107,21 +107,11 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 # zstyle ':prezto:module:ruby:chruby' auto-switch 'yes'
 
 #
-# Screen
-#
-
-# Auto start a session when Zsh is launched in a local terminal.
-# zstyle ':prezto:module:screen:auto-start' local 'yes'
-
-# Auto start a session when Zsh is launched in a SSH connection.
-# zstyle ':prezto:module:screen:auto-start' remote 'yes'
-
-#
 # SSH
 #
 
 # Set the SSH identities to load into the agent.
-# zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa2' 'id_github'
+zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_ecdsa' 'id_github' 'id_rsa_bb' 'id_rsa_me_bb'
 
 #
 # Syntax Highlighting
