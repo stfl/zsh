@@ -62,19 +62,13 @@ emulate bash -c 'runise() { \
 # }}}
 
 ############## keybinding {{{
-# bindkey -M emacs "^H" emacs-backward-word
-# bindkey -M emacs "^L" emacs-forward-word
-# bindkey -M emacs "^K" history-substring-search-up
-# bindkey -M emacs "^J" history-substring-search-down
-# bindkey -M emacs 'jk' vi-cmd-mode
-
 bindkey -M viins 'jk' vi-cmd-mode
 # bindkey -M viins "^K" history-substring-search-up
 # bindkey -M viins "^J" history-substring-search-down
 bindkey "^W" backward-kill-word # vi-backward-kill-word
-# bindkey "^X^S" prepend-sudo
+bindkey -M vicmd "^W" vi-backward-kill-word
+bindkey -M vicmd "gs" prepend-sudo
 bindkey "^P" fzf-cd-widget
-# bindkey "^P" fzf-file-widget
 # }}}
 
 ############## Functions {{{
