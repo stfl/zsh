@@ -291,7 +291,14 @@ mr()
 
 # fzf functions {{{
 # https://github.com/junegunn/fzf/wiki/examples
-command -v ag &>/dev/null && export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
+if command -v ag &>/dev/null; then
+   export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
+   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+   _fzf_compgen_path() {
+      ag -g "" "$1"
+   }
+fi
 export FZF_DEFAULT_OPTS="--reverse --inline-info"
 export FZF_TMUX_HEIGHT="30%"
 
@@ -353,6 +360,20 @@ ftags() {
       cut -c1-80 | fzf --nth=1,2
    ) && $EDITOR $(cut -f3 <<< "$line") -c "set nocst" -c "silent tag $(cut -f2 <<< "$line")" \
       || return 1
+}
+
+# fshow - git commit browser
+# Ctrl - S : toggle-sort
+# Ctrl - M : show
+fshow() {
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF"
 }
 # }}}
 # }}}
