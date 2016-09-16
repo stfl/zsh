@@ -11,12 +11,17 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 # }}}
 
+############ environment {{{
+
+ export GITURL="git@bitbucket.org:stefanlendl"
+
+# }}}
 ############ vaiables {{{
 
 setopt RM_STAR_WAIT
 
-# }}}
 
+# }}}
 ############ aliases {{{
 #alias tnas="nc -zv 192.168.0.150 2049"
 #alias mnas='wake nas; tnas; while [[ $? -ne 0 ]] { sleep 2; tnas }; sudo mount -a'
@@ -60,7 +65,6 @@ emulate bash -c 'runise() { \
 # alias jf='fasd -sif'     # interactive file selection
 
 # }}}
-
 ############## keybinding {{{
 bindkey -M viins 'jk' vi-cmd-mode
 # bindkey -M viins "^K" history-substring-search-up
@@ -70,7 +74,6 @@ bindkey -M vicmd "^W" vi-backward-kill-word
 bindkey -M vicmd "gs" prepend-sudo
 bindkey "^P" fzf-cd-widget
 # }}}
-
 ############## Functions {{{
 # vcsh commit and push
 # function vcsh_cp
@@ -377,7 +380,6 @@ FZF-EOF"
 }
 # }}}
 # }}}
-
 ############## completion {{{
 # add hosts completion for .ssh/config.d/ files
 # zstyle -s ':completion:*:hosts' hosts _ssh_config
