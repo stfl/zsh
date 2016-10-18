@@ -44,7 +44,8 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  ${HOME}/.linuxbrew/{bin,sbin}
+  ${HOME}/.linuxbrew/bin
+  ${HOME}/.cabal/bin
   ${HOME}/.local/{usr/,}{bin,sbin}
   ${HOME}/bin
   /usr/local/{bin,sbin}
