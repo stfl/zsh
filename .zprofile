@@ -44,6 +44,7 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
+  ${HOME}/.pyenv/bin
   ${HOME}/.linuxbrew/bin
   ${HOME}/.cabal/bin
   ${HOME}/.local/{usr/,}{bin,sbin}
@@ -61,6 +62,13 @@ then
 else
    export LD_LIBRARY_PATH=$add_ld:$LD_LIBRARY_PATH
 fi
+
+# 
+# Python PyEnv
+#
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 #
 # Less

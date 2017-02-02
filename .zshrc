@@ -402,3 +402,6 @@ compctl -x 'C[-1,-t]' -K _get_tags -- vim
 
 source ~/.zprofile
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+
