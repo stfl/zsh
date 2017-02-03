@@ -398,6 +398,10 @@ function _get_tags {
 compctl -x 'C[-1,-t]' -K _get_tags -- vim
 #end vim tags
 
+autoload bashcompinit
+bashcompinit
+source $HOME/.local/completion/*
+
 # }}}
 
 source ~/.zprofile
