@@ -35,6 +35,7 @@ alias vi='vim'
 command -v nvim &>/dev/null && alias vim='nvim'
 alias ag="ag --hidden -p $HOME/.config/agignore"
 
+alias killbg='kill ${${(v)jobstates##*:*:}%=*}' # kill all jobs in the background
 
 # debian apt-get aliases
 # {{{
