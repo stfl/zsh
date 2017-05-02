@@ -23,7 +23,6 @@ alias less=$PAGER
 alias zless=$PAGER
 
 
-
 #
 # Language
 #
@@ -46,15 +45,26 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  ${HOME}/.pyenv/bin
-  ${HOME}/.linuxbrew/bin
-  ${HOME}/.cabal/bin
-  ${HOME}/.local/{usr/,}{bin,sbin}
-  ${HOME}/bin
-  /usr/local/{bin,sbin}
-  /usr/{bin,sbin}
-  /{bin,sbin}
-  $path
+   # Python virtualenv
+   ${HOME}/.pyenv/bin
+
+   # binaries installed through Linuxbrew
+   ${HOME}/.linuxbrew/bin
+
+   # Haskel pkg manager Cabal
+   ${HOME}/.cabal/bin
+
+   # self-compiled stuff
+   ${HOME}/.local/{usr/,}{bin,sbin}
+   ${HOME}/bin
+
+   # God knows why that's not always included..
+   /{usr/,}{local/,}{bin,sbin}
+
+   # temporary for OmNET++
+   ${HOME}/Projects/omnetpp/omnetpp-5.1/bin
+
+   $path
 )
 
 # add only once!
