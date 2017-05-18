@@ -13,10 +13,9 @@ fi
 
 ############ environment {{{
 
- export GITURL="git@bitbucket.org:stefanlendl"
 
 # }}}
-############ vaiables {{{
+############ shell vaiables {{{
 
 setopt RM_STAR_WAIT
 
@@ -399,9 +398,11 @@ function _get_tags {
 compctl -x 'C[-1,-t]' -K _get_tags -- vim
 #end vim tags
 
+autoload -Uz compinit && compinit -i
 autoload bashcompinit
 bashcompinit
-source $HOME/.local/completion/*
+
+# source $HOME/.config/zsh/completion/*
 
 # }}}
 

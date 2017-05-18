@@ -75,12 +75,26 @@ else
    export LD_LIBRARY_PATH=$add_ld:$LD_LIBRARY_PATH
 fi
 
+#
+#  fpath
+#
+
+fpath=(
+
+   ~/.config/zsh/completion/
+
+   $fpath
+)
+
+
 # 
 # Python PyEnv
 #
 
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+if command -v pyenv &>/dev/null; then
+   eval "$(pyenv init -)"
+   eval "$(pyenv virtualenv-init -)"
+fi
 
 #
 # Less
@@ -118,9 +132,13 @@ fi
    # /usr/sbin/anacron -s -t ${HOME}/.anacron/etc/anacrontab -S ${HOME}/.anacron/spool
 # fi
 
-export TERM=xterm-256color        # for common 256 color terminals (e.g. gnome-terminal)
+export GITURL="git@bitbucket.org:stfl"
+
+# export TERM=xterm-256color        # for common 256 color terminals (e.g. gnome-terminal)
 # get some more sophisticated dir colors :D
 eval `dircolors ~/.config/dircolors.256dark`
+
+# export SRCDIR="${HOME}/.cache/pacaur/"
 
 # source frq specifics if present
 [[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
