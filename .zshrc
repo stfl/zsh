@@ -218,6 +218,26 @@ telnet()
    fi
 }
 
+scp-local-hop()
+{
+   if [[ $# < 2 ]] || [[ $1 == "-h" ]]; then
+      print usage: scp-local-hop user@remote user@remote2
+   fi
+
+   setopt localoptions noRM_STAR_WAIT
+
+   local d=/tmp/local_hop
+   local g=${d}/*(N)
+
+   mkdir -p $d
+   rm -rf ${~g}
+
+   scp $1 $d
+   scp ${~g} $2
+  
+   rm -rf ${~g}
+}
+
 imv()
 {
   local src dst
@@ -399,10 +419,11 @@ compctl -x 'C[-1,-t]' -K _get_tags -- vim
 #end vim tags
 
 autoload -Uz compinit && compinit -i
-autoload bashcompinit
-bashcompinit
+autoload bashcompinit && bashcompinit
 
-# source $HOME/.config/zsh/completion/*
+[ -f /opt/google-cloud-sdk/completion.zsh.inc ] && source /opt/google-cloud-sdk/completion.zsh.inc
+
+source ${HOME}/.config/zsh/bash_completion/gstreamer-completion
 
 # }}}
 
