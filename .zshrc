@@ -28,11 +28,17 @@ setopt RM_STAR_WAIT
 #alias mountrpi="sshfs -o idmap=user -o port=2223 stefan@192.168.0.151:/ /media/rpi/"
 alias gvim='gvim --remote-tab'
 alias tmux='TERM=xterm-256color tmux'
-alias zreload='. ~/.zshrc && . ~/.zprofile'
+alias {zr,zreload}='. ~/.zshrc && . ~/.zprofile'
 alias wget='wget --no-check-certificate'
 alias vi='vim'
 command -v nvim &>/dev/null && alias vim='nvim'
 alias ag="ag --hidden -p $HOME/.config/agignore"
+
+if command -v exa &>/dev/null; then
+   alias ll='exa -lh@ --group-directories-first --git' 
+   alias la='ll -a'
+   alias lt='ll -T' # tree view
+fi
 
 alias killbg='kill ${${(v)jobstates##*:*:}%=*}' # kill all jobs in the background
 

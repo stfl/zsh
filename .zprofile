@@ -61,8 +61,13 @@ path=(
    # God knows why that's not always included..
    /{usr/,}{local/,}{bin,sbin}
 
+   # perl binaries on arch...
+   /usr/bin/core_perl/
+   # /usr/bin/*_perl/
+
    # temporary for OmNET++
    ${HOME}/Projects/omnetpp/omnetpp-5.1/bin
+
 
    $path
 )
