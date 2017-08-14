@@ -31,6 +31,7 @@ alias tmux='TERM=xterm-256color tmux'
 alias {zr,zreload}='. ~/.zshrc && . ~/.zprofile'
 alias wget='wget --no-check-certificate'
 alias vi='vim'
+alias {ipa,ipp}='ip -br -c a'
 command -v nvim &>/dev/null && alias vim='nvim'
 alias ag="ag --hidden -p $HOME/.config/agignore"
 
