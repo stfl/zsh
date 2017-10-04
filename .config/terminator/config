@@ -2,7 +2,6 @@
   enabled_plugins = ActivityWatch, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   focus = system
   scroll_tabbar = True
-  sticky = True
   title_hide_sizetext = True
   title_transmit_bg_color = "#d30102"
 [keybindings]

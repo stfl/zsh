@@ -34,6 +34,7 @@ alias vi='vim'
 alias {ipa,ipp}='ip -br -c a'
 command -v nvim &>/dev/null && alias vim='nvim'
 alias ag="ag --hidden -p $HOME/.config/agignore"
+alias rgf="rg -l '' -g" # only filename of file matching --glob (-g)
 
 if command -v exa &>/dev/null; then
    alias ll='exa -lh@ --group-directories-first --git' 
@@ -80,6 +81,8 @@ bindkey "^W" backward-kill-word # vi-backward-kill-word
 bindkey -M vicmd "^W" vi-backward-kill-word
 bindkey -M vicmd "gs" prepend-sudo
 bindkey "^P" fzf-cd-widget
+bindkey -M vicmd "ge" edit-command-line
+
 # }}}
 ############## Functions {{{
 # vcsh commit and push

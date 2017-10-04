@@ -137,7 +137,7 @@ fi
    # /usr/sbin/anacron -s -t ${HOME}/.anacron/etc/anacrontab -S ${HOME}/.anacron/spool
 # fi
 
-export GITURL="git@bitbucket.org:stfl"
+export GITURL="git@bitbucket.org:stefanlendl"
 
 # export TERM=xterm-256color        # for common 256 color terminals (e.g. gnome-terminal)
 # get some more sophisticated dir colors :D
