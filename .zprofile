@@ -2,13 +2,10 @@
 # Executes commands at login pre-zshrc.
 #
 
-#
 # Browser
 #
 
-#
-# Editors
-#
+############ Editors{{{
 
 if command -v nvim &>/dev/null; then
    export EDITOR='nvim'
@@ -22,18 +19,15 @@ export PAGER='less' # 'vimpager'
 alias less=$PAGER
 alias zless=$PAGER
 
-
-#
-# Language
-#
+# }}}
+############ Language{{{
 
 # fixes strange cursor position / formating bug
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-#
-# Paths
-#
+# }}}
+############ Paths{{{
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
@@ -80,9 +74,7 @@ else
    export LD_LIBRARY_PATH=$add_ld:$LD_LIBRARY_PATH
 fi
 
-#
 #  fpath
-#
 
 fpath=(
 
@@ -91,19 +83,25 @@ fpath=(
    $fpath
 )
 
-
-# 
-# Python PyEnv
-#
+# }}}
+############ Python PyEnv {{{
 
 if command -v pyenv &>/dev/null; then
    eval "$(pyenv init -)"
    eval "$(pyenv virtualenv-init -)"
 fi
 
-#
-# Less
-#
+# }}}
+############ shell options {{{
+
+setopt RM_STAR_WAIT
+
+# do not exit on Ctrl-D (10x EOF still works)
+setopt IGNORE_EOF
+
+
+# }}}
+############ Less{{{
 
 # Set the default Less options.
 # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
@@ -118,8 +116,8 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
   # export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 fi
 
-#
-# Temporary Files
+#}}}
+############ Temporary Files{{{
 #
 
 if [[ ! -d "$TMPDIR" ]]; then
@@ -131,13 +129,13 @@ TMPPREFIX="${TMPDIR%/}/zsh"
 if [[ ! -d "$TMPPREFIX" ]]; then
   mkdir -p "$TMPPREFIX"
 fi
+# }}}
 
 # make anacron work for user set up
 # if [ -d ${HOME}/.anacron/etc ]; then
    # /usr/sbin/anacron -s -t ${HOME}/.anacron/etc/anacrontab -S ${HOME}/.anacron/spool
 # fi
 
-export GITURL="git@bitbucket.org:stefanlendl"
 
 # export TERM=xterm-256color        # for common 256 color terminals (e.g. gnome-terminal)
 # get some more sophisticated dir colors :D

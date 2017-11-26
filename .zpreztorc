@@ -111,8 +111,9 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 #
 
 # Set the SSH identities to load into the agent.
-zstyle ':prezto:module:ssh:load' identities 'id_*' 'google_compute_engine'
- # 'id_rsa*' 'id_rsa2' 'id_ecdsa' 'id_github' 'id_rsa_bb' 'id_rsa_me_bb'
+zstyle ':prezto:module:ssh:load' identities 'google_compute_engine' 'id_ecdsa' 'id_rsa' 'id_rsa_bb' 'id_rsa_boards' 'id_rsa_me_bb'
+ # 'id_rsa2' 'id_ecdsa' 'id_github' 'id_rsa_bb' 'id_rsa_me_bb'
+ 
 
 #
 # Syntax Highlighting

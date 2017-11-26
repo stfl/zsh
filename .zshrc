@@ -14,10 +14,7 @@ fi
 ############ environment {{{
 
 
-# }}}
-############ shell vaiables {{{
-
-setopt RM_STAR_WAIT
+export GITURL="git@bitbucket.org:stefanlendl"
 
 
 # }}}
@@ -31,10 +28,14 @@ alias tmux='TERM=xterm-256color tmux'
 alias {zr,zreload}='. ~/.zshrc && . ~/.zprofile'
 alias wget='wget --no-check-certificate'
 alias vi='vim'
+alias {py,py3}='python3'
+alias py2='python2'
+alias x='exit'
 alias {ipa,ipp}='ip -br -c a'
 command -v nvim &>/dev/null && alias vim='nvim'
 alias ag="ag --hidden -p $HOME/.config/agignore"
-alias rgf="rg -l '' -g" # only filename of file matching --glob (-g)
+alias rgf="rg --hidden --files -g"  # only filenames --glob (-g)
+alias killbg='kill ${${(v)jobstates##*:*:}%=*}' # kill all jobs in the background
 
 if command -v exa &>/dev/null; then
    alias ll='exa -lh@ --group-directories-first --git' 
@@ -42,7 +43,6 @@ if command -v exa &>/dev/null; then
    alias lt='ll -T' # tree view
 fi
 
-alias killbg='kill ${${(v)jobstates##*:*:}%=*}' # kill all jobs in the background
 
 # debian apt-get aliases
 # {{{
@@ -64,14 +64,6 @@ emulate bash -c 'runise() { \
 # alias peerflix='peerflix --vlc'
 #}}}
 
-# enable quick dir and file navigation in shell
-# alias j is set to quick cd in prezto
-# alias v='fasd -f -e vim' # quick opening files with vim
-# alias gv='fasd -f -e gvim' # quick opening files with vim
-# alias jv='fasd -sif -e vim' # quick select for opening
-# alias jgv='fasd -sif -e gvim' # quick select for opening
-# alias jf='fasd -sif'     # interactive file selection
-
 # }}}
 ############## keybinding {{{
 bindkey -M viins 'jk' vi-cmd-mode
@@ -80,40 +72,15 @@ bindkey -M viins 'jk' vi-cmd-mode
 bindkey "^W" backward-kill-word # vi-backward-kill-word
 bindkey -M vicmd "^W" vi-backward-kill-word
 bindkey -M vicmd "gs" prepend-sudo
-bindkey "^P" fzf-cd-widget
 bindkey -M vicmd "ge" edit-command-line
+
+if command -v fzf &>/dev/null; then
+  bindkey "^P" fzf-cd-widget
+fi
 
 # }}}
 ############## Functions {{{
-# vcsh commit and push
-# function vcsh_cp
-# {
-   # [[ $1 == "-h" ]] && echo "vcsh_cp <repo> <commit text>"
-   # vcsh $1 commit -am $2
-   # vcsh $1 push
-# }
-
-# write auto-commit post-commit hook to vcsh repo
-vcsh_write_auto_commit()
-{
-   if [ ! -f ~/.config/vcsh/repo.d/$1.git/hooks/post-commit ] || [[ "$2" -eq "-f" ]]; then
-      echo "#\!/bin/sh\necho "running post-commit hook"\ngit push origin master" \
-         >| ~/.config/vcsh/repo.d/$1.git/hooks/post-commit
-      chmod 700 ~/.config/vcsh/repo.d/$1.git/hooks/post-commit
-   fi
-}
-
-function vcsh_up()
-{
-   setopt localtraps
-   vcsh_up_forked $@ &
-   child_pid=$!
-   trap "echo exiting...; kill -- -$(ps -o pgid= $child_pid | grep -o '[0-9]*'); wait" INT
-   wait
-   zreload
-}
-
-# update all vcsh repos
+# update all vcsh repos{{{
 function vcsh_up_forked
 {
    echo "vcsh local status:"
@@ -152,8 +119,8 @@ function vcsh_up_forked
    [[ 0 == $debug ]] && set +x
 }
 
-
-# Disable globbing on the remote path.
+# }}}
+# Disable globbing on the remote path.{{{
 function scp_wrap {
   local -a args
   local i
@@ -164,9 +131,12 @@ function scp_wrap {
   command scp ${=args} # enables forces white space splitting -> works when mutlipe input files are given - or globing
 }
 
+# }}}
+# .ssh/config.d{{{
 #files are .ssh/config and all in ~/.ssh/config.d
 alias ssh='ssh_config_tmp; ssh' # -F ~/.ssh/config.tmp'
-alias scp='ssh_config_tmp; noglob scp_wrap' # -F ~/.ssh/config.tmp'
+# alias scp='ssh_config_tmp; noglob scp_wrap' # -F ~/.ssh/config.tmp'
+alias scp='ssh_config_tmp; scp' # -F ~/.ssh/config.tmp'
 
 ssh_config_tmp()
 {
@@ -192,7 +162,7 @@ EOF
 #            cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_*.pub
 # }
 
-# telnet with hostname
+# telnet with hostname {{{
 telnet()
 {
    avail_hosts=$(cat ~/.ssh/config |\
@@ -228,27 +198,9 @@ telnet()
    fi
 }
 
-scp-local-hop()
-{
-   if [[ $# < 2 ]] || [[ $1 == "-h" ]]; then
-      print usage: scp-local-hop user@remote user@remote2
-   fi
-
-   setopt localoptions noRM_STAR_WAIT
-
-   local d=/tmp/local_hop
-   local g=${d}/*(N)
-
-   mkdir -p $d
-   rm -rf ${~g}
-
-   scp $1 $d
-   scp ${~g} $2
-  
-   rm -rf ${~g}
-}
-
-imv()
+# }}}
+# }}}
+imv()# {{{
 {
   local src dst
   for src; do
@@ -259,13 +211,9 @@ imv()
   done
 }
 
-# function preexec {
-  # # emulate -L zsh
-  # local -a cmd; cmd=(${(z)1})
-  # title $cmd[1]:t "$cmd[2,-1]"
-# }
-
-# comparte versions - requires sort -V option!
+# }}}
+# compare versions{{{
+# requires sort -V option!
 # verlte 2.5.7 2.5.6 && echo "yes" || echo "no" # no
 # verlt 2.4.8 2.4.10 && echo "yes" || echo "no" # yes
 vermin verlte()
@@ -309,8 +257,9 @@ lf()
    ll -d $~dir
 }
 
-# run mr in home dir and colorize output
-mr() 
+# }}}
+# run mr in home dir and colorize output {{{
+mr()
 {
    if [[ $1 == up ]]; then
       (cd ~
@@ -322,8 +271,14 @@ mr()
    fi
 }
 
+# }}}
 # fzf functions {{{
 # https://github.com/junegunn/fzf/wiki/examples
+command -v fasd &>/dev/null && eval "$(fasd --init auto)"
+
+if command -v fzf &>/dev/null; then
+# do not define fzf related functions if fzf does not exist
+
 if command -v ag &>/dev/null; then
    export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -334,8 +289,6 @@ if command -v ag &>/dev/null; then
 fi
 export FZF_DEFAULT_OPTS="--reverse --inline-info"
 export FZF_TMUX_HEIGHT="30%"
-
-command -v fasd &>/dev/null && eval "$(fasd --init auto)"
 
 j() {
   local dir
@@ -408,6 +361,9 @@ fshow() {
                 {}
 FZF-EOF"
 }
+
+fi # command fzf
+
 # }}}
 # }}}
 ############## completion {{{
@@ -434,11 +390,11 @@ autoload bashcompinit && bashcompinit
 [ -f /opt/google-cloud-sdk/completion.zsh.inc ] && source /opt/google-cloud-sdk/completion.zsh.inc
 
 source ${HOME}/.config/zsh/bash_completion/gstreamer-completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # }}}
 
 source ~/.zprofile
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
 
