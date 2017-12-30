@@ -32,11 +32,11 @@
       <property name="&lt;Primary&gt;&lt;Alt&gt;t" type="string" value="terminator"/>
       <property name="Super_L" type="string" value="xfce4-popup-whiskermenu"/>
       <property name="&lt;Super&gt;e" type="string" value="nemo --no-desktop"/>
-      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;dollar" type="string" value="avset 2 3"/>
-      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;exclam" type="string" value="avset 1"/>
-      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;at" type="string" value="avset 1 2"/>
-      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;percent" type="string" value="avset 3"/>
-      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;numbersign" type="string" value="avset 2"/>
+      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;exclam" type="string" value="/home/stefan/.local/bin/avset 1"/>
+      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;at" type="string" value="/home/stefan/.local/bin/avset  1 2"/>
+      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;numbersign" type="string" value="/home/stefan/.local/bin/avset  2"/>
+      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;dollar" type="string" value="/home/stefan/.local/bin/avset  2 3"/>
+      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;percent" type="string" value="/home/stefan/.local/bin/avset  3"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">
