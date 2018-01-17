@@ -46,15 +46,21 @@ fi
 
 # debian apt-get aliases
 # {{{
-alias sapt='sudo apt-get'
-alias aup='sudo apt-get update'
-alias {aupg,aug}='sudo apt-get upgrade' # multiple aliases -> IMPORTANT without space in {,}
-alias {adupg,adg}='sudo apt-get dist-upgrade'
-alias chup='sudo apt-get update && sudo apt-get upgrade'
-alias chdup='sudo apt-get update && sudo apt-get dist-upgrade'
-alias ai='sudo apt-get install'
+command -v apt-fast &>/dev/null && alias myapt='sudo apt-fast' || alias myapt='sudo apt'
+# alias a='myapt'
+alias aup='myapt update'
+alias {aupg,aug}='myapt upgrade -y' # multiple aliases -> IMPORTANT without space in {,}
+alias {adupg,adg}='myapt dist-upgrade -y'
+alias chup='myapt update && myapt upgrade -y'
+alias chdup='myapt update && myapt dist-upgrade -y'
+alias ai='myapt install'
 alias ac='apt-cache'
 alias deba='sudo apt-mark auto'
+
+akey(){
+   gpg --keyserver ${2-pgp.mit.edu} --recv-keys $1
+   gpg --armor --export $1 | sudo apt-key add -
+}
 
 # alias find='noglob find -not -iwholename "*.svn" -path'
 emulate bash -c 'runise() { \
