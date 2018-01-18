@@ -143,5 +143,3 @@ eval `dircolors ~/.config/dircolors.256dark`
 
 # export SRCDIR="${HOME}/.cache/pacaur/"
 
-# source frq specifics if present
-[[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq

@@ -36,9 +36,10 @@ command -v nvim &>/dev/null && alias vim='nvim'
 alias ag="ag --hidden -p $HOME/.config/agignore"
 alias rgf="rg --hidden --files -g"  # only filenames --glob (-g)
 alias killbg='kill ${${(v)jobstates##*:*:}%=*}' # kill all jobs in the background
+alias path='echo ${PATH//:/\\n}'
 
 if command -v exa &>/dev/null; then
-   alias ll='exa -lh@ --group-directories-first --git' 
+   alias ll='exa -lh@ --group-directories-first' # --git' 
    alias la='ll -a'
    alias lt='ll -T' # tree view
 fi
@@ -400,7 +401,27 @@ source ${HOME}/.config/zsh/bash_completion/gstreamer-completion
 
 # }}}
 
+############## yocto {{{
+
+cpedit() {
+   # check $BBPATH
+
+   # lnedit $1
+}
+
+lnedit() {}
+
+setup-python2() {
+   # check $BBPATH
+
+}
+
+# }}}
+
 source ~/.zprofile
+
+# source frq specifics if present
+[[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
 
 
 
