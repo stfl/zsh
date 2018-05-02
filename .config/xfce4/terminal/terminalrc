@@ -33,7 +33,7 @@ MiscTabCloseMiddleClick=TRUE
 MiscTabPosition=GTK_POS_TOP
 MiscHighlightUrls=TRUE
 ScrollingLines=10000
-FontName=Anonymous Pro for Powerline 11
+FontName=SauceCodePro Nerd Font 11
 ColorForeground=#839496
 ColorBackground=#002b36
 ColorCursor=#93a1a1
@@ -50,4 +50,8 @@ MiscDefaultWorkingDir=
 MiscRewrapOnResize=TRUE
 MiscUseShiftArrowsToScroll=FALSE
 MiscSlimTabs=FALSE
+ShortcutsNoMnemonics=TRUE
+ShortcutsNoMenukey=TRUE
+ShortcutsNoHelpkey=TRUE
+MiscNewTabAdjacent=FALSE
 

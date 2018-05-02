@@ -1,0 +1,8 @@
+﻿---
+BasedOnStyle: LLVM
+ColumnLimit: '100'
+Standard: Auto
+TabWidth: '2'
+UseTab: Never
+
+...

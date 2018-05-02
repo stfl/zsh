@@ -1,0 +1,168 @@
+#!/bin/sh
+
+sourced=0
+if [ -n "$ZSH_EVAL_CONTEXT" ]; then 
+  case $ZSH_EVAL_CONTEXT in *:file) sourced=1;; esac
+elif [ -n "$KSH_VERSION" ]; then
+  [ "$(cd $(dirname -- $0) && pwd -P)/$(basename -- $0)" != "$(cd $(dirname -- ${.sh.file}) && pwd -P)/$(basename -- ${.sh.file})" ] && sourced=1
+elif [ -n "$BASH_VERSION" ]; then
+  [ "$0" != "$BASH_SOURCE" ] && sourced=1
+else # All other shells: examine $0 for known shell binary filenames
+  # Detects `sh` and `dash`; add additional shell filenames as needed.
+  case ${0##*/} in sh|dash) sourced=1;; esac
+fi
+
+if [[ $sourced == 0 ]]; then
+   echo "script needs to be sourced... Exiting"
+   exit 1
+fi
+
+uboot_prep_kimage() {
+        if [ -e arch/${ARCH}/boot/compressed/vmlinux ]; then
+                vmlinux_path="arch/${ARCH}/boot/compressed/vmlinux"
+                linux_suffix=""
+                linux_comp="none"
+        elif [ -e arch/${ARCH}/boot/vmlinuz.bin ]; then
+                rm -f linux.bin
+                cp -l arch/${ARCH}/boot/vmlinuz.bin linux.bin
+                vmlinux_path=""
+                linux_suffix=""
+                linux_comp="none"
+        else
+                vmlinux_path="vmlinux"
+                linux_suffix=".gz"
+                linux_comp="gzip"
+        fi
+
+        [ -n "${vmlinux_path}" ] && ${OBJCOPY} -O binary -R .note -R .comment -S "${vmlinux_path}" linux.bin
+
+        if [ "${linux_comp}" != "none" ] ; then
+                gzip -9 linux.bin
+                mv -f "linux.bin${linux_suffix}" linux.bin
+        fi
+
+        echo "${linux_comp}"
+}
+
+# you need to sit in build 
+# /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/build
+# KBUILD_OUTPUT=/home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/build
+# alias myimage='do_uboot_mkimage'
+do_uboot_mkimage() {
+        uboot_prep_kimage
+
+        ENTRYPOINT=0x10008000
+        if [ -n "${UBOOT_ENTRYSYMBOL}" ]; then
+                ENTRYPOINT=`${NM} ${KBUILD_OUTPUT}/vmlinux | \
+                        awk '$3=="${UBOOT_ENTRYSYMBOL}" {print "0x"$1;exit}'`
+        fi
+
+        uboot-mkimage -A arm -O linux -T kernel -C "${linux_comp}" -a 0x10008000 -e $ENTRYPOINT -n "Custom DEV Image! sll@mission-embedded.com" -d linux.bin ${KBUILD_OUTPUT}/arch/${ARCH}/boot/uImage
+        rm -f linux.bin
+        echo "wrote uImage: ${KBUILD_OUTPUT}/arch/${ARCH}/boot/uImage"
+}
+
+myimage() {
+   cd $KBUILD_OUTPUT
+   do_uboot_mkimage
+}
+
+
+# do_deploy() {
+#     kernel_do_deploy
+#         for DTB in  imx6dl-var-som-cap.dtb imx6dl-var-som-res.dtb imx6dl-var-som-solo-cap.dtb imx6dl-var-som-solo-res.dtb imx6dl-var-som-solo-vsc.dtb imx6dl-var-som-vsc.dtb imx6q-var-dart.dtb imx6q-var-som-cap.dtb imx6q-var-som-res.dtb imx6q-var-som-vsc.dtb imx6qp-var-som-cap.dtb imx6qp-var-som-res.dtb imx6qp-var-som-vsc.dtb ; do
+#                 DTB=`normalize_dtb "${DTB}"`
+#                 DTB_EXT=${DTB##*.}
+#                 DTB_BASE_NAME=`basename ${DTB} ."${DTB_EXT}"`
+#                 for type in uImage; do
+#                         base_name=${type}"-"-4.9.11-r1-var-som-mx6-20180112154807
+#                         symlink_name=${type}"-"var-som-mx6
+#                         DTB_NAME=`echo ${base_name} | sed "s/var-som-mx6/${DTB_BASE_NAME}/g"`
+#                         DTB_SYMLINK_NAME=`echo ${symlink_name} | sed "s/var-som-mx6/${DTB_BASE_NAME}/g"`
+#                         DTB_PATH=`get_real_dtb_path_in_kernel "${DTB}"`
+#                         install -d /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite
+#                         install -m 0644 ${DTB_PATH} /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${DTB_NAME}.${DTB_EXT}
+#                         ln -sf ${DTB_NAME}.${DTB_EXT} /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${DTB_SYMLINK_NAME}.${DTB_EXT}
+#                         ln -sf ${DTB_NAME}.${DTB_EXT} /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${DTB_BASE_NAME}.${DTB_EXT}
+#
+#                         if [ "$type" = "zImage" ] && [ "0" = "1" ]; then
+#                                 cat /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/$type \
+#                                         /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${DTB_NAME}.${DTB_EXT} \
+#                                         > /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${DTB_NAME}.${DTB_EXT}.bin
+#                                 ln -sf ${DTB_NAME}.${DTB_EXT}.bin /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/$type-${DTB_BASE_NAME}.${DTB_EXT}.bin
+#
+#                                 if [ -e "arch/arm/boot/${type}.initramfs" ]; then
+#                                         cat arch/arm/boot/${type}.initramfs \
+#                                                 /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${DTB_NAME}.${DTB_EXT} \
+#                                                 > /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${type}-initramfs-4.9.11-r1-var-som-mx6-20180112154807-${DTB_BASE_NAME}.${DTB_EXT}.bin
+#                                         ln -sf ${type}-initramfs-4.9.11-r1-var-som-mx6-20180112154807-${DTB_BASE_NAME}.${DTB_EXT}.bin \
+#                                                /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${type}-initramfs-${DTB_BASE_NAME}.${DTB_EXT}-var-som-mx6.bin
+#                                 fi
+#                         FI
+#                 DONE
+#         DONE
+# }
+
+
+# kernel_do_deploy() {
+#         for type in uImage ; do
+#                 base_name=${type}--4.9.11-r1-var-som-mx6-20180112154807
+#                 install -m 0644 arch/arm/boot/${type} /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${base_name}.bin
+#         done
+#         if [ 1 = "1" ] && (grep -q -i -e '^CONFIG_MODULES=y$' .config); then
+#                 mkdir -p /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/lib
+#                 tar -cvzf /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/modules--4.9.11-r1-var-som-mx6-20180112154807.tgz -C /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image lib
+#                 ln -sf modules--4.9.11-r1-var-som-mx6-20180112154807.tgz /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/modules-var-som-mx6.tgz
+#         fi
+#
+#         for type in uImage ; do
+#                 base_name=${type}--4.9.11-r1-var-som-mx6-20180112154807
+#                 symlink_name=${type}-var-som-mx6
+#                 ln -sf ${base_name}.bin /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${symlink_name}.bin
+#                 ln -sf ${base_name}.bin /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${type}
+#         done
+#
+#         cd /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/build
+#         # Update deploy directory
+#         for type in uImage ; do
+#                 if [ -e "arch/arm/boot/${type}.initramfs" ]; then
+#                         echo "Copying deploy ${type} kernel-initramfs image and setting up links..."
+#                         initramfs_base_name=${type}-initramfs-4.9.11-r1-var-som-mx6-20180112154807
+#                         initramfs_symlink_name=${type}-initramfs-var-som-mx6
+#                         install -m 0644 arch/arm/boot/${type}.initramfs /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${initramfs_base_name}.bin
+#                         ln -sf ${initramfs_base_name}.bin /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/deploy-linux-variscite/${initramfs_symlink_name}.bin
+#                 fi
+#         done
+# }
+#
+# kernel_do_install() {
+#         #
+#         # First install the modules
+#         #
+#         unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
+#         if (grep -q -i -e '^CONFIG_MODULES=y$' .config); then
+#                 oe_runmake DEPMOD=echo MODLIB=/home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/lib/modules/4.9.11-mx6+g8acc1a483056 INSTALL_FW_PATH=/home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/lib/firmware modules_install
+#                 rm "/home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/lib/modules/4.9.11-mx6+g8acc1a483056/build"
+#                 rm "/home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/lib/modules/4.9.11-mx6+g8acc1a483056/source"
+#                 # If the kernel/ directory is empty remove it to prevent QA issues
+#                 rmdir --ignore-fail-on-non-empty "/home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/lib/modules/4.9.11-mx6+g8acc1a483056/kernel"
+#         else
+#                 bbnote "no modules to install"
+#         fi
+#
+#         #
+#         # Install various kernel output (zImage, map file, config, module support files)
+#         #
+#         install -d /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/boot
+#         install -d /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/boot
+#         for type in uImage ; do
+#                 install -m 0644 arch/arm/boot/${type} /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/boot/${type}-4.9.11-mx6+g8acc1a483056
+#                 ln -sf ${type}-4.9.11-mx6+g8acc1a483056 /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/boot/${type}
+#         done
+#         install -m 0644 System.map /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/boot/System.map-4.9.11-mx6+g8acc1a483056
+#         install -m 0644 .config /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/boot/config-4.9.11-mx6+g8acc1a483056
+#         install -m 0644 vmlinux /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/boot/vmlinux-4.9.11-mx6+g8acc1a483056
+#         [ -e Module.symvers ] && install -m 0644 Module.symvers /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/boot/Module.symvers-4.9.11-mx6+g8acc1a483056
+#         install -d /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/etc/modules-load.d
+#         install -d /home/slendl/yocto/var-fslc-yocto/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/image/etc/modprobe.d
+# }
