@@ -27,16 +27,18 @@ alias gvim='gvim --remote-tab'
 alias tmux='TERM=xterm-256color tmux'
 alias {zr,zreload}='. ~/.zshrc && . ~/.zprofile'
 alias wget='wget --no-check-certificate'
-alias vi='vim'
 alias {py,py3}='python3'
 alias py2='python2'
 alias x='exit'
 alias {ipa,ipp}='ip -br -c a'
+alias vi='vim'
 command -v nvim &>/dev/null && alias vim='nvim'
 alias ag="ag --hidden -p $HOME/.config/agignore"
-alias rgf="rg --hidden --files -g"  # only filenames --glob (-g)
+# alias rgf="rg --hidden --files -g"  # only filenames --glob (-g)
 alias killbg='kill ${${(v)jobstates##*:*:}%=*}' # kill all jobs in the background
 alias path='echo ${PATH//:/\\n}'
+command -v fd &>/dev/null || alias fd='find'  # use regular find if fd is not installed
+
 
 if command -v exa &>/dev/null; then
    alias ll='exa -lh@ --group-directories-first' # --git' 
@@ -44,17 +46,18 @@ if command -v exa &>/dev/null; then
    alias lt='ll -T' # tree view
 fi
 
+alias p='pacui'
 
 # debian apt-get aliases
 # {{{
-command -v apt-fast &>/dev/null && alias myapt='sudo apt-fast' || alias myapt='sudo apt'
+command -v apt-fast &>/dev/null && alias a='sudo apt-fast' || alias a='sudo apt'
 # alias a='myapt'
-alias aup='myapt update'
-alias {aupg,aug}='myapt upgrade -y' # multiple aliases -> IMPORTANT without space in {,}
-alias {adupg,adg}='myapt dist-upgrade -y'
-alias chup='myapt update && myapt upgrade -y'
-alias chdup='myapt update && myapt dist-upgrade -y'
-alias ai='myapt install'
+alias aup='a update'
+alias {aupg,aug}='a upgrade -y' # multiple aliases -> IMPORTANT without space in {,}
+alias {adupg,adg}='a dist-upgrade -y'
+alias chup='a update && a upgrade -y'
+alias chdup='a update && a dist-upgrade -y'
+alias ai='a install'
 alias ac='apt-cache'
 alias deba='sudo apt-mark auto'
 
@@ -72,7 +75,7 @@ emulate bash -c 'runise() { \
 #}}}
 
 # }}}
-############## keybinding {{{
+############## keybinding | mappings {{{
 bindkey -M viins 'jk' vi-cmd-mode
 # bindkey -M viins "^K" history-substring-search-up
 # bindkey -M viins "^J" history-substring-search-down
@@ -88,8 +91,7 @@ fi
 # }}}
 ############## Functions {{{
 # update all vcsh repos{{{
-function vcsh_up_forked
-{
+function vcsh_up_forked {
    echo "vcsh local status:"
    vcsh status
    if [[ x"-v" == x"$1" ]]; then
@@ -140,8 +142,7 @@ function scp_wrap {
 
 # }}}
 
-ssh-git-setup()
-{
+ssh-git-setup() {
    target=$1
    identity=${2:-"~/.ssh/id_rsa_me_bb"}
    ssh-copy-id -i $identity $target &>/dev/null
@@ -165,8 +166,7 @@ alias ssh='ssh_config_tmp; ssh' # -F ~/.ssh/config.tmp'
 # alias scp='ssh_config_tmp; noglob scp_wrap' # -F ~/.ssh/config.tmp'
 alias scp='ssh_config_tmp; scp' # -F ~/.ssh/config.tmp'
 
-ssh_config_tmp()
-{
+ssh_config_tmp() {
    setopt localoptions nonomatch null_glob
    rm -f ${HOME}/.ssh/config
    cat > ${HOME}/.ssh/config <<EOF
@@ -190,8 +190,7 @@ EOF
 # }
 
 # telnet with hostname {{{
-telnet()
-{
+telnet() {
    avail_hosts=$(cat ~/.ssh/config |\
       sed -ne 's/Host[=\t ]//Ip' |\
       sed -ne '/^[^#]/p' |\
@@ -348,22 +347,22 @@ fe() {
       || return 1
 }
 
-# fd - cd to selected directory
-fd() {
-   local dir
-   dir=$(find ${1:-.} -path '*/\.*' -prune \
-      -o -type d -print 2> /dev/null | fzf-tmux +m) \
-      && cd "$dir" \
-      || return 1
-}
-
-# fda - including hidden directories
-fda() {
-   local dir
-   dir=$(find ${1:-.} -type d 2> /dev/null | fzf-tmux +m) \
-      && cd "$dir" \
-      || return 1
-}
+# # fd - cd to selected directory
+# fd() {
+#    local dir
+#    dir=$(find ${1:-.} -path '*/\.*' -prune \
+#       -o -type d -print 2> /dev/null | fzf-tmux +m) \
+#       && cd "$dir" \
+#       || return 1
+# }
+# 
+# # fda - including hidden directories
+# fda() {
+#    local dir
+#    dir=$(find ${1:-.} -type d 2> /dev/null | fzf-tmux +m) \
+#       && cd "$dir" \
+#       || return 1
+# }
 
 # ftags - search ctags
 ftags() {

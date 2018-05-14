@@ -42,6 +42,7 @@ zstyle ':prezto:load' pmodule \
   'wakeonlan' \
   'command-not-found' \
   'history-substring-search' \
+  'autosuggestions' \
   'utility' \
   'prompt'
   # 'fasd' \
@@ -112,7 +113,6 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 
 # Set the SSH identities to load into the agent.
 zstyle ':prezto:module:ssh:load' identities 'google_compute_engine' 'id_ecdsa' 'id_rsa' 'id_rsa_bb' 'id_rsa_boards' 'id_rsa_me_bb'
- # 'id_rsa2' 'id_ecdsa' 'id_github' 'id_rsa_bb' 'id_rsa_me_bb'
  
 
 #
@@ -139,6 +139,11 @@ zstyle ':prezto:module:syntax-highlighting' highlighters $highlighters
 #   'builtin' 'bg=blue' \
 #   'command' 'bg=blue' \
 #   'function' 'bg=blue'
+
+# Autosuggestions
+
+zstyle ':prezto:module:autosuggestions' color 'yes'
+# zstyle ':prezto:module:autosuggestions:color' found ''
 
 #
 # Terminal

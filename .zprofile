@@ -39,40 +39,51 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-   # Python virtualenv
-   ${HOME}/.pyenv/bin
+  # Python virtualenv
+  ${HOME}/.pyenv/bin
 
-   # binaries installed through Linuxbrew
-   ${HOME}/.linuxbrew/bin
+  # binaries installed through Linuxbrew
+  ${HOME}/.linuxbrew/bin
 
-   # Haskel pkg manager Cabal
-   ${HOME}/.cabal/bin
+  # Haskel pkg manager Cabal
+  ${HOME}/.cabal/bin
 
-   # self-compiled stuff
-   ${HOME}/.local/{usr/,}{bin,sbin}
-   ${HOME}/bin
+  # self-compiled stuff
+  ${HOME}/.local/{usr/,}{bin,sbin}
+  ${HOME}/bin
 
-   # God knows why that's not always included..
-   /{usr/,}{local/,}{bin,sbin}
+  # God knows why that's not always included..
+  /{usr/,}{local/,}{bin,sbin}
 
-   # perl binaries on arch...
-   /usr/bin/core_perl/
-   # /usr/bin/*_perl/
+  # perl binaries on arch...
+  /usr/bin/core_perl/
+  # /usr/bin/*_perl/
 
-   # temporary for OmNET++
-   ${HOME}/Projects/omnetpp/omnetpp-5.1/bin
+  # temporary for OmNET++
+  # ${HOME}/Projects/omnetpp/omnetpp-5.1/bin
 
+  # CUDA on Arch Linux > done by package manager
+  # /opt/cuda/bin
 
-   $path
+  $path
 )
 
-# add only once!
-local add_ld="$HOME/.local/lib:$HOME/.local/usr/lib"
-if test "${LD_LIBRARY_PATH#*$add_ld}" != "$LD_LIBRARY_PATH"
-then
-else
-   export LD_LIBRARY_PATH=$add_ld:$LD_LIBRARY_PATH
-fi
+add_ld=(
+  "$HOME/.local/lib"
+  "$HOME/.local/usr/lib"
+  "/opt/cuda/lib"
+  )
+
+for (( i = 1; i <= ${#add_ld[*]}; i++ )) do
+  add=${add_ld[i]}
+  if test "${LD_LIBRARY_PATH} ==  ''"; then
+    # add first one without :
+    export LD_LIBRARY_PATH=$add
+  elif ! test "${LD_LIBRARY_PATH#*$add}" != "$LD_LIBRARY_PATH"; then
+    # add only once!
+    export LD_LIBRARY_PATH=$add:$LD_LIBRARY_PATH
+  fi
+done
 
 #  fpath
 
