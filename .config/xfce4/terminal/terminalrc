@@ -54,4 +54,5 @@ ShortcutsNoMnemonics=TRUE
 ShortcutsNoMenukey=TRUE
 ShortcutsNoHelpkey=TRUE
 MiscNewTabAdjacent=FALSE
+MiscShowRelaunchDialog=TRUE
 
