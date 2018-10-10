@@ -88,9 +88,7 @@ done
 #  fpath
 
 fpath=(
-
    ~/.config/zsh/completion/
-
    $fpath
 )
 
@@ -154,3 +152,5 @@ eval `dircolors ~/.config/dircolors.256dark`
 
 # export SRCDIR="${HOME}/.cache/pacaur/"
 
+
+export PATH="$HOME/.cargo/bin:$PATH"

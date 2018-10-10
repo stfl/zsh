@@ -1,20 +1,29 @@
-# {{{
-# Executes commands at the start of an interactive session.
+# {{{ Executes commands at the start of an interactive session.
 #
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
-
 # Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+# if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+#   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+# fi
+
+
+ZPLUG_SUDO_PASSWORD=
+ZPLUG_PROTOCOL=ssh
+
+export ZPLUG_HOME=$HOME/.config/zplug
+
+if [[ ! -d $ZPLUG_HOME ]]; then
+  git clone https://github.com/zplug/zplug $ZPLUG_HOME
+  source $ZPLUG_HOME/init.zsh && zplug update --self
 fi
+source $ZPLUG_HOME/init.zsh
+source $HOME/.config/zsh/zplugins.zsh
+
 # }}}
 
 ############ environment {{{
 
-
-export GITURL="git@bitbucket.org:stefanlendl"
+#private bitbucket
+export GITURL="git@bitbucket.org:stfl_priv"
 
 
 # }}}
@@ -41,7 +50,7 @@ command -v fd &>/dev/null || alias fd='find'  # use regular find if fd is not in
 
 
 if command -v exa &>/dev/null; then
-   alias ll='exa -lh@ --group-directories-first' # --git' 
+   alias ll='exa -lh --group-directories-first' # --git' 
    alias la='ll -a'
    alias lt='ll -T' # tree view
 fi
@@ -76,6 +85,8 @@ emulate bash -c 'runise() { \
 
 # }}}
 ############## keybinding | mappings {{{
+# vi keybindings
+# bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 # bindkey -M viins "^K" history-substring-search-up
 # bindkey -M viins "^J" history-substring-search-down
@@ -84,9 +95,6 @@ bindkey -M vicmd "^W" vi-backward-kill-word
 bindkey -M vicmd "gs" prepend-sudo
 bindkey -M vicmd "ge" edit-command-line
 
-if command -v fzf &>/dev/null; then
-  bindkey "^P" fzf-cd-widget
-fi
 
 # }}}
 ############## Functions {{{
@@ -298,97 +306,17 @@ mr()
 }
 
 # }}}
-# fzf functions {{{
-# https://github.com/junegunn/fzf/wiki/examples
-command -v fasd &>/dev/null && eval "$(fasd --init auto)"
 
-if command -v fzf &>/dev/null; then
-# do not define fzf related functions if fzf does not exist
-
-if command -v ag &>/dev/null; then
-   export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
-   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-   _fzf_compgen_path() {
-      ag -g "" "$1"
-   }
-fi
-export FZF_DEFAULT_OPTS="--reverse --inline-info"
-export FZF_TMUX_HEIGHT="30%"
-
-j() {
-  local dir
-  dir="$(fasd -Rdl "$1" | fzf-tmux -1 -0 --no-sort +m)" \
-     && cd "${dir}" \
-     || return 1
-}
-v() {
-   local file
-   file="$(fasd -Rfl "$1" | fzf-tmux -1 -0 --no-sort -m)" \
-      && vim -p ${=file} \
-      || return 1
-}
-jj() {
-   local dest
-   dest=$(dirs | sed "s/ /\n/g" | fzf-tmux) \
-      && cd ${~dest} \
-      || return 1
-   # requires ~ to remove surrounding ''
+get_latest_release_github() {
+  curl --silent "https://api.github.com/repos/$1/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")'
 }
 
-# fe [FUZZY PATTERN] - Open the selected file with the default editor
-#   - Bypass fuzzy finder if there's only one match (--select-1)
-#   - Exit if there's no match (--exit-0)
-fe() {
-   local file
-   # use multi select with <TAB>
-   file=$(fzf-tmux --query="$1" --select-1 --exit-0 -m) \
-      && vim -p ${=file} \
-      || return 1
-}
-
-# # fd - cd to selected directory
-# fd() {
-#    local dir
-#    dir=$(find ${1:-.} -path '*/\.*' -prune \
-#       -o -type d -print 2> /dev/null | fzf-tmux +m) \
-#       && cd "$dir" \
-#       || return 1
-# }
-# 
-# # fda - including hidden directories
-# fda() {
-#    local dir
-#    dir=$(find ${1:-.} -type d 2> /dev/null | fzf-tmux +m) \
-#       && cd "$dir" \
-#       || return 1
+# install_latest_release_github() {
+#   get_latest_release_github $1
 # }
 
-# ftags - search ctags
-ftags() {
-   local line
-   [ -e tags ] && line=$(
-      awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' tags |
-      cut -c1-80 | fzf --nth=1,2
-   ) && $EDITOR $(cut -f3 <<< "$line") -c "set nocst" -c "silent tag $(cut -f2 <<< "$line")" \
-      || return 1
-}
-
-# fshow - git commit browser
-# Ctrl - S : toggle-sort
-# Ctrl - M : show
-fshow() {
-  git log --graph --color=always \
-      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
-      --bind "ctrl-m:execute:
-                (grep -o '[a-f0-9]\{7\}' | head -1 |
-                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
-                {}
-FZF-EOF"
-}
-
-fi # command fzf
+source ~/.config/zsh/fzf.zsh
+# source ~/.config/zsh/yocto.zsh
 
 # }}}
 # }}}
@@ -420,99 +348,6 @@ source ${HOME}/.config/zsh/bash_completion/gstreamer-completion
 
 # }}}
 
-############## yocto {{{
-
-cpedit() {
-   if (( ! ${+1} )); then
-      echo "missing argument"
-   fi
-   if (( ! ${+KBUILD_OUTPUT} )); then
-      echo  "\$KBUILD_OUTPUT not set ... run in devshell!"
-   fi
-
-   command mkdir $KBUILD_OUTPUT/../../work
-   # if [[ -e $KBUILD_OUTPUT/../../work/$1 ]]; then
-   #    read -p  "$KBUILD_OUTPUT/../../work/$1 exits.. continue? (y/N)" answer
-   #    (( $answer != y )) && return
-   # fi
-
-   command cp --parent $1 $KBUILD_OUTPUT/../../work -v
-   lnedit $1
-}
-
-lnedit() {
-   if (( ! ${+1} )); then
-      echo "missing argument"
-   fi
-   if (( ! ${+KBUILD_OUTPUT} )); then
-      echo  "\$KBUILD_OUTPUT not set ... run in devshell!"
-   fi
-
-   if [[ ! -f $KBUILD_OUTPUT/../../work/$1 ]]; then
-      echo  "$KBUILD_OUTPUT/../../work/$1 does not exits.. abort"
-      return
-   fi
-   command ln $KBUILD_OUTPUT/../../work/$1 $1 -vsf
-}
-
-setup-python2() {
-   # check $BBPATH
-
-}
-
-wait_deply_kernel() {
-   TARGET_DIR=${TARGET_DIR-/home/slendl/yocto/ladekran-23/build/tmp/work/var_som_mx6-fslc-linux-gnueabi/linux-variscite/4.9.11-r1/build}
-   TARGET_WAIT=${TARGET_DIR}/arch/arm/boot/uImage
-   TARGET_DEPLOY=${TARGET_DEPLOY-$TARGET_WAIT}
-   TARGET_BOARD=${TARGET_BOARD-imx6}
-   while inotifywait -e modify ${TARGET_WAIT}; do
-      scp ${=TARGET_DEPLOY} ${TARGET_BOARD}:/boot
-      if (( ${+TARGET_MODULES} )); then
-         # FIXME
-         scp ${=TARGET_MODULES} ${TARGET_BOARD}:/lib/kernel/
-      fi
-      ssh ${TARGET_BOARD} /sbin/reboot
-   done
-}
-
-prepare_sd_flash() {
-   if (( ${+BBPATH} )); then
-      YOCTO_ROOT=$BBPATH
-   else
-      echo "\$BBPATH not set ... taking $PWD"
-      YOCTO_ROOT=$PWD
-   fi
-   MACHINE=${MACHINE-var-som-mx6}
-   ROOTFS_DIR=${ROOTFS_DIR-/mnt/rootfs}
-   IMAGE=${IMAGE-ladekran-base-image}
-
-   if [ ! -d "$ROOTFS_DIR/opt/images/Yocto" ]; then
-      echo $ROOTFS_DIR/opt/images/Yocto does not exist..
-      return -1
-   fi
-
-   # Linux:
-   sudo command cp -v ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/uImage                      ${ROOTFS_DIR}/opt/images/Yocto/
-   # U-boot:
-   sudo command cp -v ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/SPL-nand                    ${ROOTFS_DIR}/opt/images/Yocto/
-   sudo command cp -v ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/SPL-sd                      ${ROOTFS_DIR}/opt/images/Yocto/
-   sudo command cp -v ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/u-boot-${MACHINE}.img-sd    ${ROOTFS_DIR}/opt/images/Yocto/u-boot.img-sd
-   sudo command cp -v ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/u-boot-${MACHINE}.img-nand  ${ROOTFS_DIR}/opt/images/Yocto/u-boot.img-nand
-   # File System:
-   sudo command cp -v ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}.tar.gz ${ROOTFS_DIR}/opt/images/Yocto/rootfs.tar.gz
-   sudo command cp -v ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}.ubi     ${ROOTFS_DIR}/opt/images/Yocto/rootfs.ubi
-   # Device Tree:
-   sudo command cp -v ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/uImage-imx6*.dtb            ${ROOTFS_DIR}/opt/images/Yocto/
-   # TODO sudo command rename without uImage-
-   
-   # sudo cp ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/uImage-imx6dl-var-som-solo-vsc.dtb ${ROOTFS_DIR}/opt/images/Yocto/
-   # sudo cp ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/uImage-imx6dl-var-som.dtb ${ROOTFS_DIR}/opt/images/Yocto/
-   # sudo cp ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/uImage-imx6q-var-som.dtb ${ROOTFS_DIR}/opt/images/Yocto/
-   # sudo cp ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/uImage-imx6q-var-som-vsc.dtb ${ROOTFS_DIR}/opt/images/Yocto/
-   # sudo cp ${YOCTO_ROOT}/tmp/deploy/images/${MACHINE}/uImage-imx6q-var-dart.dtb ${ROOTFS_DIR}/opt/images/Yocto/
-
-   sync
-}
 
 # }}}
 
