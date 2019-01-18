@@ -1,5 +1,13 @@
 #  vim: set ft=zsh
 
+# source fzf key bindings:
+if [ -f /usr/share/fzf/shell/key-bindings.zsh ]; then
+  # on Fedora:
+  source /usr/share/fzf/shell/key-bindings.zsh
+else
+  # TODO
+fi
+
 # init fasd even if fzf does not exist
 command -v fasd &>/dev/null && eval "$(fasd --init auto)"
 
@@ -11,7 +19,12 @@ if ! command -v fzf &>/dev/null; then
   return 0
 fi
 
-export FZF_DEFAULT_OPTS="--reverse --inline-info --ansi"
+export FZF_DEFAULT_OPTS="--reverse --inline-info --ansi
+  --bind=ctrl-s:toggle-sort
+  --bind=ctrl-u:half-page-up
+  --bind=ctrl-d:half-page-down
+"
+
 
 if command -v fd &>/dev/null; then
   export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git --color=always'
@@ -88,22 +101,62 @@ ftags() {
       || return 1
 }
 
-# fshow - git commit browser
-# Ctrl - S : toggle-sort
-# Ctrl - M : show
-fshow() {
-  git log --graph --color=always \
-      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
-      --bind "ctrl-m:execute:
-                (grep -o '[a-f0-9]\{7\}' | head -1 |
-                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
-                {}
-FZF-EOF"
+
+# fbr - checkout git branch (including remote branches), sorted by most recent commit, limit 30 last branches
+fbr() {
+  local branches branch
+  branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
+# fco - checkout git branch/tag, with a preview showing the commits between the tag/branch and HEAD
+fco() {
+  local tags branches target
+  tags=$(
+git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
+  branches=$(
+git branch --all | grep -v HEAD |
+sed "s/.* //" | sed "s#remotes/[^/]*/##" |
+sort -u | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
+  target=$(
+(echo "$tags"; echo "$branches") |
+    fzf --no-hscroll --no-multi --delimiter="\t" -n 2 \
+        --ansi --preview="git log -200 --pretty=format:%s $(echo {+2..} |  sed 's/$/../' )" ) || return
+  git checkout $(echo "$target" | awk '{print $2}')
+}
 
-### 
+alias glNoGraph='git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr% C(auto)%an" "$@"'
+alias glGraph='git log --graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr% C(auto)%an" "$@"'
+_gitLogLineToHash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
+_viewGitLogLine="$_gitLogLineToHash | xargs -I % sh -c 'git show --color=always % | diff-so-fancy'"
 
-bindkey "^P" fzf-cd-widget
+# fcoc_preview - checkout git commit with previews
+fcoc() {
+  local commit
+  commit=$( glNoGraph |
+    fzf --no-sort --reverse --tiebreak=index --no-multi \
+        --ansi --preview="$_viewGitLogLine" ) &&
+  git checkout $(echo "$commit" | sed "s/ .*//")
+}
 
+# fshow_preview - git commit browser with previews
+fshow() {
+    glGraph |
+        fzf --no-sort --reverse --tiebreak=index --no-multi \
+            --ansi --preview="$_viewGitLogLine" \
+                --header "[enter]: view | <a-y> copy hash | <c-s> toggle sort ", \
+                --bind "enter:execute:$_viewGitLogLine   | less -R" \
+                --bind "alt-p:execute:$_gitLogLineToHash | xclip"
+}
+
+fcherry() {
+    commits=$( glNoGraph |
+        fzf --multi --reverse --tiebreak=index \
+            --ansi --preview="$_viewGitLogLine") &&
+      echo -n "cherry-picking: \n${commits}\n\n" &&
+      for commit in $(echo "$commits" | sed "s/ .*//" | tac ); do
+        git cherry-pick $commit
+      done
+}

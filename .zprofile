@@ -45,12 +45,17 @@ path=(
   # binaries installed through Linuxbrew
   ${HOME}/.linuxbrew/bin
 
-  # Haskel pkg manager Cabal
+  # Haskell pkg manager Cabal
   ${HOME}/.cabal/bin
 
+
+
   # self-compiled stuff
-  ${HOME}/.local/{usr/,}{bin,sbin}
+  ${HOME}/.local/{usr/,}{local/,}{bin,sbin}
   ${HOME}/bin
+
+  # flatpak
+  /var/lib/flatpak/exports/bin/
 
   # God knows why that's not always included..
   /{usr/,}{local/,}{bin,sbin}

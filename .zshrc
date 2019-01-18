@@ -344,7 +344,6 @@ autoload bashcompinit && bashcompinit
 [ -f /opt/google-cloud-sdk/completion.zsh.inc ] && source /opt/google-cloud-sdk/completion.zsh.inc
 
 source ${HOME}/.config/zsh/bash_completion/gstreamer-completion
-# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # }}}
 
@@ -356,3 +355,5 @@ source ~/.zprofile
 # source frq specifics if present
 [[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
