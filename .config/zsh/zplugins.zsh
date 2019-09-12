@@ -1,6 +1,6 @@
 # export _ZPLUG_PREZTO="zsh-users/prezto"
 
-zplug "zplug/zplug", hook-build:"zplug --self-manage"
+zplug "zplug/zplug" #, hook-build:"zplug --self-manage"
 
 # prezto options
 zstyle ':prezto:module:*' color 'yes'

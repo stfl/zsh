@@ -5,6 +5,7 @@
 #   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 # fi
 
+# zmodload zsh/zprof
 
 ZPLUG_SUDO_PASSWORD=
 ZPLUG_PROTOCOL=ssh
@@ -306,6 +307,10 @@ mr()
 }
 
 # }}}
+
+# tar() {
+  # tar -cSf - $1 -I lbzip2 | pv -p --timer --rate --bytes --size `sudo du -sb rootfs | cut -f1` >| /tmp/test.tar.bz2
+# }
 
 get_latest_release_github() {
   curl --silent "https://api.github.com/repos/$1/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")'
