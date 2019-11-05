@@ -34,7 +34,7 @@ export GITURL="git@bitbucket.org:stfl_priv"
 #alias snas='ssh nas sudo halt -p'
 #alias mountrpi="sshfs -o idmap=user -o port=2223 stefan@192.168.0.151:/ /media/rpi/"
 alias gvim='gvim --remote-tab'
-alias tmux='TERM=xterm-256color tmux'
+# alias tmux='TERM=xterm-256color tmux'
 alias {zr,zreload}='. ~/.zshrc && . ~/.zprofile'
 alias wget='wget --no-check-certificate'
 alias {py,py3}='python3'
