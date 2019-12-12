@@ -49,6 +49,9 @@ alias killbg='kill ${${(v)jobstates##*:*:}%=*}' # kill all jobs in the backgroun
 alias path='echo ${PATH//:/\\n}'
 command -v fd &>/dev/null || alias fd='find'  # use regular find if fd is not installed
 
+# setting python host proc for neovim
+export PYTHON_HOST_PROG="$HOME/.pyenv/versions/py2nvim/bin/python"
+export PYTHON3_HOST_PROG="$HOME/.pyenv/versions/py3nvim/bin/python"
 
 if command -v exa &>/dev/null; then
    alias ll='exa -lh --group-directories-first' # --git' 
