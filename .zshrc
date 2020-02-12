@@ -56,7 +56,7 @@ export PYTHON3_HOST_PROG="$HOME/.pyenv/versions/py3nvim/bin/python"
 if command -v exa &>/dev/null; then
    alias ll='exa -lh --group-directories-first' # --git' 
    alias la='ll -a'
-   alias lt='ll -T' # tree view
+   alias {tree,lt}='ll -T' # tree view
 fi
 
 alias p='pacui'

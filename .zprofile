@@ -10,14 +10,14 @@
 if command -v nvim &>/dev/null; then
    export EDITOR='nvim'
    export VISUAL='nvim'
-   export MANPAGER="nvim -c 'set ft=man' -"
+   # export MANPAGER="nvim -c 'set ft=man' -"
 else
    export EDITOR='vim'
    export VISUAL='vim'
 fi
-export PAGER='less' # 'vimpager'
-alias less=$PAGER
-alias zless=$PAGER
+# export PAGER='less' # 'vimpager'
+# alias less=$PAGER
+# alias zless=$PAGER
 
 # }}}
 ############ Language{{{
