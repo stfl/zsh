@@ -48,6 +48,7 @@ alias ag="ag --hidden -p $HOME/.config/agignore"
 alias killbg='kill ${${(v)jobstates##*:*:}%=*}' # kill all jobs in the background
 alias path='echo ${PATH//:/\\n}'
 command -v fd &>/dev/null || alias fd='find'  # use regular find if fd is not installed
+command -v fdfind &>/dev/null && alias fd='fdfind'
 
 # setting python host proc for neovim
 export PYTHON_HOST_PROG="$HOME/.pyenv/versions/py2nvim/bin/python"
