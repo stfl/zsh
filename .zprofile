@@ -47,7 +47,9 @@ path=(
 
   # Haskell pkg manager Cabal
   ${HOME}/.cabal/bin
-
+  
+  # Yarn install
+  ${HOME}/.yarn/bin
 
 
   # self-compiled stuff
