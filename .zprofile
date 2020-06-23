@@ -39,22 +39,33 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  # Python virtualenv
-  ${HOME}/.pyenv/bin
-
-  # binaries installed through Linuxbrew
-  ${HOME}/.linuxbrew/bin
-
   # Haskell pkg manager Cabal
   ${HOME}/.cabal/bin
   
   # Yarn install
   ${HOME}/.yarn/bin
 
+  # PHP Composer pkg manager
+  ${HOME}/.config/composer/vendor/bin
+  ${HOME}/.composer/vendor/bin
+
+  # doom-emacs
+  ${HOME}/.emacs.d/bin
 
   # self-compiled stuff
   ${HOME}/.local/{usr/,}{local/,}{bin,sbin}
   ${HOME}/bin
+
+  # Anaconda on Arch
+  ${HOME}/.anaconda3/bin
+  ${HOME}/anaconda3/bin
+  /opt/anaconda/bin
+
+  # Python virtualenv
+  ${HOME}/.pyenv/bin
+
+  # binaries installed through Linuxbrew
+  ${HOME}/.linuxbrew/bin
 
   # flatpak
   /var/lib/flatpak/exports/bin/
@@ -102,10 +113,10 @@ fpath=(
 # }}}
 ############ Python PyEnv {{{
 
-if command -v pyenv &>/dev/null; then
-   eval "$(pyenv init -)"
-   eval "$(pyenv virtualenv-init -)"
-fi
+# if command -v pyenv &>/dev/null; then
+   # eval "$(pyenv init -)"
+   # eval "$(pyenv virtualenv-init -)"
+# fi
 
 # }}}
 ############ shell options {{{
