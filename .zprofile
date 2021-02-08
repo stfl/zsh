@@ -45,6 +45,8 @@ path=(
   # Yarn install
   ${HOME}/.yarn/bin
 
+  "$HOME/.cargo/bin"
+
   # PHP Composer pkg manager
   ${HOME}/.config/composer/vendor/bin
   ${HOME}/.composer/vendor/bin
@@ -57,9 +59,9 @@ path=(
   ${HOME}/bin
 
   # Anaconda on Arch
-  ${HOME}/.anaconda3/bin
-  ${HOME}/anaconda3/bin
-  /opt/anaconda/bin
+  # ${HOME}/.anaconda3/bin
+  # ${HOME}/anaconda3/bin
+  # /opt/anaconda/bin
 
   # Python virtualenv
   ${HOME}/.pyenv/bin
@@ -171,4 +173,3 @@ eval `dircolors ~/.config/dircolors.256dark`
 # export SRCDIR="${HOME}/.cache/pacaur/"
 
 
-export PATH="$HOME/.cargo/bin:$PATH"
