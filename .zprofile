@@ -168,7 +168,7 @@ fi
 
 # export TERM=xterm-256color        # for common 256 color terminals (e.g. gnome-terminal)
 # get some more sophisticated dir colors :D
-eval `dircolors ~/.config/dircolors.256dark`
+# eval `dircolors ~/.config/dircolors.256dark`
 
 # export SRCDIR="${HOME}/.cache/pacaur/"
 

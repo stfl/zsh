@@ -327,7 +327,7 @@ get_latest_release_github() {
 #   get_latest_release_github $1
 # }
 
-source ~/.config/zsh/fzf.zsh
+[ -f ~/.config/zsh/fzf.zsh ] && source ~/.config/zsh/fzf.zsh
 # source ~/.config/zsh/yocto.zsh
 
 # }}}
@@ -335,7 +335,7 @@ source ~/.config/zsh/fzf.zsh
 ############## completion {{{
 # add hosts completion for .ssh/config.d/ files
 # zstyle -s ':completion:*:hosts' hosts _ssh_config
-ssh_config_tmp # make the ssh_config.tmp once
+# ssh_config_tmp # make the ssh_config.tmp once
 # [[ -e ~/.ssh/config.tmp ]] && \
 #    _ssh_config=($(cat ~/.ssh/config.tmp | sed -ne 's/Host[=\t ]//Ip' | sed -ne '/^[^#]/p'))
 # zstyle ':completion:*:hosts' hosts $_ssh_config
@@ -353,9 +353,9 @@ compctl -x 'C[-1,-t]' -K _get_tags -- vim
 autoload -Uz compinit && compinit -i
 autoload bashcompinit && bashcompinit
 
-[ -f /opt/google-cloud-sdk/completion.zsh.inc ] && source /opt/google-cloud-sdk/completion.zsh.inc
+# [ -f /opt/google-cloud-sdk/completion.zsh.inc ] && source /opt/google-cloud-sdk/completion.zsh.inc
 
-source ${HOME}/.config/zsh/bash_completion/gstreamer-completion
+# source ${HOME}/.config/zsh/bash_completion/gstreamer-completion
 
 # }}}
 
@@ -365,7 +365,7 @@ source ${HOME}/.config/zsh/bash_completion/gstreamer-completion
 source ~/.zprofile
 
 # source frq specifics if present
-[[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
+# [[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
