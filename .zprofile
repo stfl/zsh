@@ -172,3 +172,8 @@ eval `dircolors ~/.config/dircolors.256dark`
 
 
 export PATH="$HOME/.cargo/bin:$PATH"
+
+export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="$HOME/.yarn/bin:$PATH"
+
+export NODE_PATH=/usr/lib/nodejs:/usr/share/nodejs

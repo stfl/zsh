@@ -1,66 +1,119 @@
-# {{{ Executes commands at the start of an interactive session.
-#
-# Source Prezto.
-# if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-#   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH="/home/stefan/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="robbyrussell"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  dotenv
+  cargo
+  rust
+  rustup
+  colored-man-pages
+  command-not-found
+  common-aliases
+  colorize
+  tmux
+  ubuntu
+  fasd
+  fd
+  fzf
+  docker
+  docker-compose
+  emacs
+  vi-mode
+  sudo
+  ssh-agent
+  ripgrep
+  python
+  extract
+  composer
+  kubectl
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
 # fi
 
-# zmodload zsh/zprof
-
-ZPLUG_SUDO_PASSWORD=
-ZPLUG_PROTOCOL=ssh
-
-export ZPLUG_HOME=$HOME/.config/zplug
-
-if [[ ! -d $ZPLUG_HOME ]]; then
-  git clone https://github.com/zplug/zplug $ZPLUG_HOME
-  source $ZPLUG_HOME/init.zsh && zplug update --self
-fi
-source $ZPLUG_HOME/init.zsh
-source $HOME/.config/zsh/zplugins.zsh
-
-# }}}
-
-############ environment {{{
-
-#private bitbucket
-export GITURL="git@bitbucket.org:stfl_priv"
-
-
-# }}}
-############ aliases {{{
-#alias tnas="nc -zv 192.168.0.150 2049"
-#alias mnas='wake nas; tnas; while [[ $? -ne 0 ]] { sleep 2; tnas }; sudo mount -a'
-#alias snas='ssh nas sudo halt -p'
-#alias mountrpi="sshfs -o idmap=user -o port=2223 stefan@192.168.0.151:/ /media/rpi/"
-alias gvim='gvim --remote-tab'
-# alias tmux='TERM=xterm-256color tmux'
-alias {zr,zreload}='. ~/.zshrc && . ~/.zprofile'
-alias wget='wget --no-check-certificate'
-alias {py,py3}='python3'
-alias py2='python2'
-alias x='exit'
-alias {ipa,ipp}='ip -br -c a'
-alias vi='vim'
-command -v nvim &>/dev/null && alias vim='nvim'
-alias ag="ag --hidden -p $HOME/.config/agignore"
-# alias rgf="rg --hidden --files -g"  # only filenames --glob (-g)
-alias killbg='kill ${${(v)jobstates##*:*:}%=*}' # kill all jobs in the background
-alias path='echo ${PATH//:/\\n}'
-command -v fd &>/dev/null || alias fd='find'  # use regular find if fd is not installed
-command -v fdfind &>/dev/null && alias fd='fdfind'
-
-# setting python host proc for neovim
-export PYTHON_HOST_PROG="$HOME/.pyenv/versions/py2nvim/bin/python"
-export PYTHON3_HOST_PROG="$HOME/.pyenv/versions/py3nvim/bin/python"
-
-if command -v exa &>/dev/null; then
-   alias ll='exa -lh --group-directories-first' # --git' 
-   alias la='ll -a'
-   alias {tree,lt}='ll -T' # tree view
-fi
-
-alias p='pacui'
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
 
 alias rmv="rsync --remove-source-files --info=progress2 --partial -ha"
 alias rcp="rsync --info=progress2 --partial -ha"
@@ -199,189 +252,19 @@ EOF
    # rm -f ~/.ssh/config.tmp
 }
 
-# ssh-copy-id()
-# {
-#    ssh $1 'mkdir ~/.ssh 2>/dev/null;
-#            cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_*.pub
-# }
-
-# telnet with hostname {{{
-telnet() {
-   avail_hosts=$(cat ~/.ssh/config |\
-      sed -ne 's/Host[=\t ]//Ip' |\
-      sed -ne '/^[^#]/p' |\
-      tr '\n' ' ' )
-   avail_array=(${=avail_hosts})                                     # make array
-   if [[ ${avail_array[(i)${1}]} > $#avail_array ]]; then            # not in array
-      command telnet $@
-   else
-      echo lookup $1 in ssh hosts
-      connect=$1
-      shift
-      local fifo=/tmp/hosts
-      mkfifo $fifo
-      exec 6<>$fifo
-      cat ~/.ssh/config |\
-         sed -ne 's/Host[=\t ]//Ip' -ne 's/hostname[=\t ]//Ip' |\
-         sed -ne '/^[ \t]*#/!p' >&6
-      while true; do                                              # we already know it's in there
-         read host <&6
-         read ip <&6
-         ha=(${=host})
-         if [[ ${ha[(i)${connect}]} < $#ha ]]; then
-            echo found $ip
-            connect=$ip
-            break
-         fi
-      done
-      exec 6<&-                                                      # closing the fd
-      rm -f $fifo
-      command telnet $connect $@
-   fi
-}
-
-# }}}
-# }}}
-imv()# {{{
-{
-  local src dst
-  for src; do
-    [[ -e $src ]] || { print -u2 "$src does not exist"; continue }
-    dst=$src
-    vared dst
-    [[ $src != $dst ]] && mkdir -p $dst:h && mv -n $src $dst
-  done
-}
-
-# }}}
-# compare versions{{{
-# requires sort -V option!
-# verlte 2.5.7 2.5.6 && echo "yes" || echo "no" # no
-# verlt 2.4.8 2.4.10 && echo "yes" || echo "no" # yes
-vermin verlte()
-{
-   if [[ "$#" == "0" ]] || [[ x"-h" == x"$1" ]]; then
-      echo "$0 2.5.7 2.5.6 && echo yes || echo no # (<= no)"
-      echo "[ \$1 -le \$2 ]"
-      echo "$0 \$min_required \$current"
-      return
-   fi
-   [  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
-   return $?
-}
-verlt()
-{
-   if [[ "$#" == "0" ]] || [[ x"-h" == x"$1" ]]; then
-      echo "$0 2.4.8 2.4.10 && echo yes || echo no # (<= yes)"
-      echo "[ \$1 -lt \$2 ]"
-      echo "$0 \$last_version \$current"
-      return
-   fi
-   [ "$1" = "$2" ] && return 1 || verlte $1 $2
-   return $?
-}
-
-# print full file names
-lf()
-{
-   if [[ "$#" == "0" ]]; then
-      # current dir
-      local dir="$PWD/*"
-   elif [[ "$#" == "1" ]]; then
-      if [[ -d $1 ]]; then
-         # dir target
-         local dir=${PWD}/${~@}/*
-      else
-         # one file target
-         local dir=$PWD/$1
-      fi
-   fi
-   ll -d $~dir
-}
-
-# }}}
-# run mr in home dir and colorize output {{{
-mr()
-{
-   if [[ $1 == up ]]; then
-      (cd ~
-      GREP_COLORS="mc=01;31"
-      command mr -j 5 up 2>&1 | egrep --colour "\bfailed\b|$"
-      )
-   else
-      command mr $@
-   fi
-}
-
-# }}}
-
-# tar() {
-  # tar -cSf - $1 -I lbzip2 | pv -p --timer --rate --bytes --size `sudo du -sb rootfs | cut -f1` >| /tmp/test.tar.bz2
-# }
-
-get_latest_release_github() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")'
-}
-
-# install_latest_release_github() {
-#   get_latest_release_github $1
-# }
-
-source ~/.config/zsh/fzf.zsh
-# source ~/.config/zsh/yocto.zsh
-
-# }}}
-# }}}
-############## completion {{{
-# add hosts completion for .ssh/config.d/ files
-# zstyle -s ':completion:*:hosts' hosts _ssh_config
-ssh_config_tmp # make the ssh_config.tmp once
-# [[ -e ~/.ssh/config.tmp ]] && \
-#    _ssh_config=($(cat ~/.ssh/config.tmp | sed -ne 's/Host[=\t ]//Ip' | sed -ne '/^[^#]/p'))
-# zstyle ':completion:*:hosts' hosts $_ssh_config
-
-#vim tags
-function _get_tags {
-  [ -f ./tags ] || return
-  local cur
-  read -l cur
-  echo $(echo $(awk -v ORS=" "  "/^${cur}/ { print \$1 }" tags))
-}
-compctl -x 'C[-1,-t]' -K _get_tags -- vim
-#end vim tags
-
-autoload -Uz compinit && compinit -i
-autoload bashcompinit && bashcompinit
-
-[ -f /opt/google-cloud-sdk/completion.zsh.inc ] && source /opt/google-cloud-sdk/completion.zsh.inc
-
-source ${HOME}/.config/zsh/bash_completion/gstreamer-completion
-
-# }}}
-
-
-# }}}
-
-source ~/.zprofile
-
-# source frq specifics if present
-[[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/stefan/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/stefan/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/stefan/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/stefan/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+# __conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+#         . "/opt/anaconda3/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/opt/anaconda3/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
 # <<< conda initialize <<<
 
+# if [ -e /home/stefan/.nix-profile/etc/profile.d/nix.sh ]; then . /home/stefan/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
