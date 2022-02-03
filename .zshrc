@@ -353,6 +353,24 @@ compctl -x 'C[-1,-t]' -K _get_tags -- vim
 autoload -Uz compinit && compinit -i
 autoload bashcompinit && bashcompinit
 
+# direnv hook setup {{{
+
+_direnv_hook() {
+  trap -- '' SIGINT;
+  eval "$("/usr/bin/direnv" export zsh)";
+  trap - SIGINT;
+}
+typeset -ag precmd_functions;
+if [[ -z ${precmd_functions[(r)_direnv_hook]} ]]; then
+  precmd_functions=( _direnv_hook ${precmd_functions[@]} )
+fi
+typeset -ag chpwd_functions;
+if [[ -z ${chpwd_functions[(r)_direnv_hook]} ]]; then
+  chpwd_functions=( _direnv_hook ${chpwd_functions[@]} )
+fi
+
+# }}}
+
 # [ -f /opt/google-cloud-sdk/completion.zsh.inc ] && source /opt/google-cloud-sdk/completion.zsh.inc
 
 # source ${HOME}/.config/zsh/bash_completion/gstreamer-completion
@@ -367,6 +385,7 @@ source ~/.zprofile
 # source frq specifics if present
 # [[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
 
+command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
