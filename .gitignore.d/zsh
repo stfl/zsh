@@ -4,6 +4,8 @@
 !/.config/agignore
 !/.config/.clang-format
 !/.config/dircolors.256dark
+!/.config/direnv
+!/.config/direnv/direnvrc
 !/.config/tilda
 !/.config/tilda/config_0
 !/.config/zsh
