@@ -42,7 +42,7 @@ zplug "modules/environment", from:prezto, defer:0
 # zplug "zsh-users/zsh-history-substring-search", from:github
 zplug "modules/history", from:prezto
 zplug "modules/git", from:prezto
-zplug "modules/ssh", from:prezto
+# zplug "modules/ssh", from:prezto
 
 zplug "modules/directory", from:prezto
 zplug "modules/editor", from:prezto

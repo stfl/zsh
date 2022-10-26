@@ -7,7 +7,11 @@
 
 ############ Editors{{{
 
-if command -v nvim &>/dev/null; then
+if command -v emacs &>/dev/null; then
+   export EDITOR='emacs'
+   export VISUAL='nvim'
+   # export MANPAGER="nvim -c 'set ft=man' -"
+elif command -v nvim &>/dev/null; then
    export EDITOR='nvim'
    export VISUAL='nvim'
    # export MANPAGER="nvim -c 'set ft=man' -"
