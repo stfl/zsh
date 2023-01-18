@@ -353,6 +353,8 @@ compctl -x 'C[-1,-t]' -K _get_tags -- vim
 autoload -Uz compinit && compinit -i
 autoload bashcompinit && bashcompinit
 
+source ~/.zprofile
+
 # direnv hook setup {{{
 
 _direnv_hook() {
@@ -379,8 +381,6 @@ fi
 
 
 # }}}
-
-source ~/.zprofile
 
 # source frq specifics if present
 # [[ -f ~/.zprofile.frq ]] && source ~/.zprofile.frq
